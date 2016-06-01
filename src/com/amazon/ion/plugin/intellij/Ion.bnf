@@ -1,0 +1,47 @@
+/*
+ * Copyright 2015-[2016] Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in
+ * compliance with the License. A copy of the License is located at
+ *
+ *     http://aws.amazon.com/apache2.0/
+ *
+ * or in the "license" file accompanying this file. This file is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
+ * language governing permissions and limitations under the License.
+ */
+
+{
+  parserClass="com.amazon.ion.plugin.intellij.parser.IonParser"
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+  psiClassPrefix="Ion"
+  psiImplClassSuffix="Impl"
+  psiPackage="com.amazon.ion.plugin.intellij.psi"
+  psiImplPackage="com.amazon.ion.plugin.intellij.psi.impl"
+  elementTypeHolderClass="com.amazon.ion.plugin.intellij.psi.IonTypes"
+  elementTypeClass="com.amazon.ion.plugin.intellij.psi.IonElementType"
+  tokenTypeClass="com.amazon.ion.plugin.intellij.psi.IonTokenType"
+  psiImplUtilClass="com.amazon.ion.plugin.intellij.psi.impl.IonPsiImplUtil"
+}
+
+ionFile ::= item_*
+private item_ ::=  value
+
+object ::= (struct | array | expression)
+struct ::= (LBRACE RBRACE) | (LBRACE members RBRACE) | (LBRACE members COMMA RBRACE)
+members ::= pair (COMMA pair)*
+pair ::= COMMENT* (key SEPARATOR value)
+key ::= (QUOTE KEY_NAME QUOTE) | (QQUOTE KEY_NAME QQUOTE) | (QQQUOTE KEY_NAME QQQUOTE) | KEY_NAME {methods=[getKeyName]}
+array ::= (LBRACKET RBRACKET) | (LBRACKET elements RBRACKET) | (LBRACKET elements COMMA RBRACKET)
+elements ::= value (COMMA value)*
+expression ::= (LPAREN  RPAREN) | (LPAREN atoms RPAREN) | (LPAREN atoms COMMA RPAREN)
+atoms ::= (OPERATOR | value)+
+blob ::= LOB_START (BLOB_VALUE)? LOB_END
+clob ::= LOB_START (string)? LOB_END
+qqq_string ::= QQQ_START (QQQ_VALUE)? QQQ_END
+qq_string ::= QQ_START (QQ_VALUE)? QQ_END
+q_string ::= Q_START (Q_VALUE)? Q_END
+string ::= (qqq_string | qq_string)
+symbol ::= (IDENTIFIER | q_string)
+annotation ::= (IDENTIFIER | q_string) ANNOTATION_SEPARATOR
+value ::= (annotation)* (string | symbol | blob | clob | INTEGER | DECIMAL | HEXINT | BININT | BOOLEAN | NULL | IDENTIFIER | TIMESTAMP | object) {methods=[getValueAsString]}
