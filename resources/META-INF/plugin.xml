@@ -14,10 +14,10 @@
   <id>software.amazon.ion.intellj</id>
   <name>Amazon Ion</name>
   <version>1.0</version>
-  <vendor email="ion-team@amazon.com" url="https://github.com/amznlabs">Amazon Labs</vendor>
+  <vendor email="ion-team@amazon.com" url="https://github.com/amzn">Amazon</vendor>
 
   <description><![CDATA[
-      IntelliJ IDEA plugin to support <a href="http://amznlabs.github.io/ion-docs/index.html">Amazon Ion</a>
+      IntelliJ IDEA plugin to support <a href="http://amzn.github.io/ion-docs">Amazon Ion</a>
     ]]></description>
 
   <change-notes><![CDATA[
