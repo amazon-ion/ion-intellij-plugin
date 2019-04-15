@@ -70,7 +70,7 @@ public class IonBlock extends AbstractBlock {
             ASTNode child = myNode.getFirstChildNode();
             while (child != null) {
                 if (child.getElementType() != TokenType.WHITE_SPACE) {
-                    Block block = new IonBlock(child, Wrap.createWrap(WrapType.NORMAL, false), myAlignment, spacingBuilder, settings);
+                    Block block = new IonBlock(child, Wrap.createWrap(WrapType.NONE, false), myAlignment, spacingBuilder, settings);
                     blocks.add(block);
                 }
                 child = child.getTreeNext();
