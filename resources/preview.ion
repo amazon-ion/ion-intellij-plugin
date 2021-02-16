@@ -1,0 +1,31 @@
+
+/*
+    Davy crockett person record
+*/
+Ion::Person::{
+    name: "Davy Crockett",
+
+    // Dynamically compute age through an expression
+    age: (subtract years::now 1786),
+
+    birthplace: {
+        city: "Limestone",
+        state: "Tennessee"
+    },
+    family: {
+        children: [
+            {
+                name: "John Crockett"
+            },
+            {
+                name: "Margaret Crockett"
+            },
+            /* May have more children? */
+        ],
+    },
+    tags: [
+        Pioneer,
+        'Texas Revolution',
+        'The Alamo',
+    ]
+}
