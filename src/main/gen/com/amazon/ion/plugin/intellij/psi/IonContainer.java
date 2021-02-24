@@ -5,13 +5,13 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface IonObject extends PsiElement {
+public interface IonContainer extends PsiElement {
 
   @Nullable
-  IonArray getArray();
+  IonList getList();
 
   @Nullable
-  IonExpression getExpression();
+  IonSexpression getSexpression();
 
   @Nullable
   IonStruct getStruct();

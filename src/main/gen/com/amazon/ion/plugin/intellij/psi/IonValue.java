@@ -17,7 +17,7 @@ public interface IonValue extends PsiElement {
   IonClob getClob();
 
   @Nullable
-  IonObject getObject();
+  IonContainer getContainer();
 
   @Nullable
   IonString getString();

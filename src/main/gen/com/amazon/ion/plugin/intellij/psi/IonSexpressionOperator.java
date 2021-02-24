@@ -5,9 +5,12 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface IonArray extends PsiElement {
+public interface IonSexpressionOperator extends PsiElement {
 
-  @Nullable
-  IonElements getElements();
+  @NotNull
+  List<IonAnnotation> getAnnotationList();
+
+  @NotNull
+  IonSymbol getSymbol();
 
 }

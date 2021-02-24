@@ -11,14 +11,14 @@ import static com.amazon.ion.plugin.intellij.psi.IonTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.amazon.ion.plugin.intellij.psi.*;
 
-public class IonExpressionImpl extends ASTWrapperPsiElement implements IonExpression {
+public class IonSexpressionOperatorImpl extends ASTWrapperPsiElement implements IonSexpressionOperator {
 
-  public IonExpressionImpl(@NotNull ASTNode node) {
+  public IonSexpressionOperatorImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull IonVisitor visitor) {
-    visitor.visitExpression(this);
+    visitor.visitSexpressionOperator(this);
   }
 
   @Override
@@ -28,15 +28,15 @@ public class IonExpressionImpl extends ASTWrapperPsiElement implements IonExpres
   }
 
   @Override
-  @Nullable
-  public IonAtoms getAtoms() {
-    return findChildByClass(IonAtoms.class);
+  @NotNull
+  public List<IonAnnotation> getAnnotationList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, IonAnnotation.class);
   }
 
   @Override
-  @Nullable
-  public IonExpressionOperator getExpressionOperator() {
-    return findChildByClass(IonExpressionOperator.class);
+  @NotNull
+  public IonSymbol getSymbol() {
+    return findNotNullChildByClass(IonSymbol.class);
   }
 
 }

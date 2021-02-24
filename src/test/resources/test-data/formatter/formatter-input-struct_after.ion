@@ -1,0 +1,10 @@
+{
+    // Comments
+    another: {
+        struct: {
+            // Inner struct comment
+            member: true
+        }
+    }
+    // Around
+}

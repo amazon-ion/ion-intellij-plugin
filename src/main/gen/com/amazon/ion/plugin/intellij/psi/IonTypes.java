@@ -9,20 +9,20 @@ import com.amazon.ion.plugin.intellij.psi.impl.*;
 public interface IonTypes {
 
   IElementType ANNOTATION = new IonElementType("ANNOTATION");
-  IElementType ARRAY = new IonElementType("ARRAY");
   IElementType ATOMS = new IonElementType("ATOMS");
   IElementType BLOB = new IonElementType("BLOB");
   IElementType CLOB = new IonElementType("CLOB");
+  IElementType CONTAINER = new IonElementType("CONTAINER");
   IElementType ELEMENTS = new IonElementType("ELEMENTS");
-  IElementType EXPRESSION = new IonElementType("EXPRESSION");
-  IElementType EXPRESSION_OPERATOR = new IonElementType("EXPRESSION_OPERATOR");
   IElementType KEY = new IonElementType("KEY");
+  IElementType LIST = new IonElementType("LIST");
   IElementType MEMBERS = new IonElementType("MEMBERS");
-  IElementType OBJECT = new IonElementType("OBJECT");
   IElementType PAIR = new IonElementType("PAIR");
   IElementType QQQ_STRING = new IonElementType("QQQ_STRING");
   IElementType QQ_STRING = new IonElementType("QQ_STRING");
   IElementType Q_STRING = new IonElementType("Q_STRING");
+  IElementType SEXPRESSION = new IonElementType("SEXPRESSION");
+  IElementType SEXPRESSION_OPERATOR = new IonElementType("SEXPRESSION_OPERATOR");
   IElementType STRING = new IonElementType("STRING");
   IElementType STRUCT = new IonElementType("STRUCT");
   IElementType SYMBOL = new IonElementType("SYMBOL");
@@ -71,9 +71,6 @@ public interface IonTypes {
       if (type == ANNOTATION) {
         return new IonAnnotationImpl(node);
       }
-      else if (type == ARRAY) {
-        return new IonArrayImpl(node);
-      }
       else if (type == ATOMS) {
         return new IonAtomsImpl(node);
       }
@@ -83,23 +80,20 @@ public interface IonTypes {
       else if (type == CLOB) {
         return new IonClobImpl(node);
       }
+      else if (type == CONTAINER) {
+        return new IonContainerImpl(node);
+      }
       else if (type == ELEMENTS) {
         return new IonElementsImpl(node);
-      }
-      else if (type == EXPRESSION) {
-        return new IonExpressionImpl(node);
-      }
-      else if (type == EXPRESSION_OPERATOR) {
-        return new IonExpressionOperatorImpl(node);
       }
       else if (type == KEY) {
         return new IonKeyImpl(node);
       }
+      else if (type == LIST) {
+        return new IonListImpl(node);
+      }
       else if (type == MEMBERS) {
         return new IonMembersImpl(node);
-      }
-      else if (type == OBJECT) {
-        return new IonObjectImpl(node);
       }
       else if (type == PAIR) {
         return new IonPairImpl(node);
@@ -112,6 +106,12 @@ public interface IonTypes {
       }
       else if (type == Q_STRING) {
         return new IonQStringImpl(node);
+      }
+      else if (type == SEXPRESSION) {
+        return new IonSexpressionImpl(node);
+      }
+      else if (type == SEXPRESSION_OPERATOR) {
+        return new IonSexpressionOperatorImpl(node);
       }
       else if (type == STRING) {
         return new IonStringImpl(node);

@@ -11,10 +11,6 @@ public class IonVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitArray(@NotNull IonArray o) {
-    visitPsiElement(o);
-  }
-
   public void visitAtoms(@NotNull IonAtoms o) {
     visitPsiElement(o);
   }
@@ -27,15 +23,11 @@ public class IonVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitContainer(@NotNull IonContainer o) {
+    visitPsiElement(o);
+  }
+
   public void visitElements(@NotNull IonElements o) {
-    visitPsiElement(o);
-  }
-
-  public void visitExpression(@NotNull IonExpression o) {
-    visitPsiElement(o);
-  }
-
-  public void visitExpressionOperator(@NotNull IonExpressionOperator o) {
     visitPsiElement(o);
   }
 
@@ -43,11 +35,11 @@ public class IonVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitMembers(@NotNull IonMembers o) {
+  public void visitList(@NotNull IonList o) {
     visitPsiElement(o);
   }
 
-  public void visitObject(@NotNull IonObject o) {
+  public void visitMembers(@NotNull IonMembers o) {
     visitPsiElement(o);
   }
 
@@ -64,6 +56,14 @@ public class IonVisitor extends PsiElementVisitor {
   }
 
   public void visitQqqString(@NotNull IonQqqString o) {
+    visitPsiElement(o);
+  }
+
+  public void visitSexpression(@NotNull IonSexpression o) {
+    visitPsiElement(o);
+  }
+
+  public void visitSexpressionOperator(@NotNull IonSexpressionOperator o) {
     visitPsiElement(o);
   }
 

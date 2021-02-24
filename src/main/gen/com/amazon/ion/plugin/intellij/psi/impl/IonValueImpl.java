@@ -47,8 +47,8 @@ public class IonValueImpl extends ASTWrapperPsiElement implements IonValue {
 
   @Override
   @Nullable
-  public IonObject getObject() {
-    return findChildByClass(IonObject.class);
+  public IonContainer getContainer() {
+    return findChildByClass(IonContainer.class);
   }
 
   @Override

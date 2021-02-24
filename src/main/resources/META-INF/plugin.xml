@@ -1,0 +1,53 @@
+<idea-plugin>
+    <!--
+        This file defines how the plugin is registered into IntelliJ. Additional information will be added to the
+        final plugin.xml by the Gradle build process and the patchPluginXml task.
+
+        For information on how to modify this file see:
+        https://jetbrains.org/intellij/sdk/docs/basics/plugin_structure/plugin_configuration_file.html
+    -->
+
+    <id>software.amazon.ion.intellj</id>
+    <name>Amazon Ion</name>
+    <vendor email="ion-team@amazon.com" url="https://github.com/amzn">Amazon</vendor>
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.lang</depends>
+    <depends>com.intellij.modules.java</depends>
+    <depends>org.jetbrains.kotlin</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+
+        <!-- Registers the Ion file type into IntelliJ -->
+        <fileType name="Ion"
+                    implementationClass="com.amazon.ion.plugin.intellij.IonLanguageFileType"
+                    fieldName="INSTANCE" language="Ion" extensions="ion"
+        />
+
+        <!-- Registers a color settings editor page into IntelliJ -->
+        <colorSettingsPage implementation="com.amazon.ion.plugin.intellij.highlight.IonColorSettingsPage"/>
+
+        <!-- Register a code style settings editor page into IntelliJ -->
+        <langCodeStyleSettingsProvider implementation="com.amazon.ion.plugin.intellij.formatting.IonLanguageCodeStyleSettingsProvider"/>
+
+        <!-- Registers a code style settings provider which will provide the initial settings for the Ion code style. -->
+        <codeStyleSettingsProvider implementation="com.amazon.ion.plugin.intellij.formatting.IonCodeStyleSettingsProvider"/>
+
+        <!-- Executes annotators against the Ion file which creates more complex color highlighting -->
+        <annotator language="Ion" implementationClass="com.amazon.ion.plugin.intellij.highlight.IonSyntaxAnnotatorExecutor"/>
+
+        <!-- Ion Operator Coding Insights - ROADMAP ITEM -->
+        <!--<codeInsight.lineMarkerProvider language="Ion" implementationClass="com.amazon.ion.language.markers.JavaIonOperatorMarkerProvider"/>-->
+
+        <!-- Registers a type EVENT handler for Ion Files -->
+        <typedHandler implementation="com.amazon.ion.plugin.intellij.editor.IonTypedHandler" id="IonTypedHandler"/>
+
+        <lang.parserDefinition language="Ion" implementationClass="com.amazon.ion.plugin.intellij.IonParserDefinition"/>
+        <lang.psiStructureViewFactory language="Ion" implementationClass="com.amazon.ion.plugin.intellij.structure.IonStructureViewFactory"/>
+        <lang.syntaxHighlighterFactory language="Ion" implementationClass="com.amazon.ion.plugin.intellij.highlight.IonSyntaxHighlighterFactory"/>
+        <lang.foldingBuilder language="Ion" implementationClass="com.amazon.ion.plugin.intellij.folding.IonFoldingBuilder"/>
+        <lang.braceMatcher language="Ion" implementationClass="com.amazon.ion.plugin.intellij.formatting.IonCodeBraceMatcherAdapter"/>
+        <lang.formatter language="Ion" implementationClass="com.amazon.ion.plugin.intellij.formatting.IonFormattingModelBuilder"/>
+        <lang.commenter language="Ion" implementationClass="com.amazon.ion.plugin.intellij.comments.IonCommenter"/>
+    </extensions>
+</idea-plugin>
