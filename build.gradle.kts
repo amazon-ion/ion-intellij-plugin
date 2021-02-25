@@ -1,9 +1,8 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.jetbrains.kotlin.types.typeUtil.closure
 
 plugins {
-    kotlin("jvm") version "1.4.10"
-    id("org.jetbrains.intellij") version "0.6.5"
+    kotlin("jvm") version "1.4.30"
+    id("org.jetbrains.intellij") version "0.7.2"
 }
 
 // Import variables from gradle.properties file
@@ -68,7 +67,7 @@ tasks {
     findByName("buildSearchableOptions")?.enabled = false
 
     patchPluginXml {
-        version("1.0")
+        version("2.0")
         sinceBuild(pluginSinceBuild)
         untilBuild(pluginUntilBuild)
 

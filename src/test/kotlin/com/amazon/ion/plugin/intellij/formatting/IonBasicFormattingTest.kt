@@ -1,8 +1,16 @@
 package com.amazon.ion.plugin.intellij.formatting
 
+/**
+ * Runs some Ion syntax formatting test cases.
+ */
 class IonBasicFormattingTest : IonFormatterTestBase() {
+
     override fun getBasePath(): String = "formatter"
 
+    /**
+     * Runs default test which uses the test name "formatter-input-struct" is the test
+     * directory.
+     */
     fun `test formatter-input-struct`() = doTest()
 
     fun `test struct with comments`() = doTextTest(
