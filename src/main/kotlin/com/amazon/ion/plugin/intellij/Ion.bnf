@@ -1,0 +1,45 @@
+{
+  parserClass="com.amazon.ion.plugin.intellij.IonParser"
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+  psiClassPrefix="Ion"
+  psiImplClassSuffix="Impl"
+
+  psiPackage="com.amazon.ion.plugin.intellij.psi"
+  psiImplPackage="com.amazon.ion.plugin.intellij.psi.impl"
+
+  elementTypeHolderClass="com.amazon.ion.plugin.intellij.psi.IonTypes"
+  elementTypeClass="com.amazon.ion.plugin.intellij.psi.IonElementType"
+  tokenTypeClass="com.amazon.ion.plugin.intellij.psi.IonTokenType"
+  psiImplUtilClass="com.amazon.ion.plugin.intellij.psi.impl.IonPsiUtil"
+}
+
+ionFile ::= item_*
+private item_ ::=  value
+
+container ::= (struct | list | sexpression)
+struct ::= LBRACE [members] RBRACE {pin=1}
+members ::= struct_pair*
+pair ::= COMMENT* (key SEPARATOR value)
+key ::= (QUOTE KEY_NAME QUOTE) | (QQUOTE KEY_NAME QQUOTE) | (QQQUOTE KEY_NAME QQQUOTE) | KEY_NAME {methods=[getKeyName]}
+list ::= LBRACKET [elements] RBRACKET {pin=1}
+elements ::= list_element*
+sexpression ::= (LPAREN [sexpression_operator] [atoms] RPAREN)
+sexpression_operator ::= (annotation)* (symbol)
+atoms ::= sexpression_atom+
+blob ::= LOB_START (BLOB_VALUE | BAD_CHARACTER) LOB_END
+clob ::= LOB_START (string) LOB_END
+qqq_string ::= QQQ_START (QQQ_VALUE)? QQQ_END
+qq_string ::= QQ_START (QQ_VALUE)? QQ_END
+q_string ::= Q_START (Q_VALUE)? Q_END
+string ::= (qqq_string | qq_string)
+symbol ::= (IDENTIFIER | q_string)
+annotation ::= (IDENTIFIER | q_string) ANNOTATION_SEPARATOR
+value ::= (annotation)* (string | symbol | blob | clob | INTEGER | DECIMAL | HEXINT | BININT | BOOLEAN | NULL | IDENTIFIER | TIMESTAMP | container) {methods=[getValueAsString]}
+
+private sexpression_atom ::= OPERATOR | value {pin(".*")=1 recoverWhile=not_paren_or_next_member}
+private struct_pair ::= pair (COMMA | &RBRACE) {pin=1 recoverWhile=not_brace_or_next_pair}
+private list_element ::= value (COMMA | &RBRACKET) {pin=1 recoverWhile=not_bracket_or_next_value}
+
+private not_paren_or_next_member ::= !(RPAREN | OPERATOR | value)
+private not_bracket_or_next_value ::= !(RBRACKET | value)
+private not_brace_or_next_pair ::= !(RBRACE | pair)
