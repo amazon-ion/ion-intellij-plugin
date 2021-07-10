@@ -25,7 +25,7 @@ jobs:
   # Build and test plugin and provide artifact.
   build:
     name: Build
-    needs: test
+    needs: gradleValidation
     runs-on: ubuntu-latest
     strategy:
       matrix:
