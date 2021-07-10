@@ -19,9 +19,9 @@ repositories {
 
 val plugins = listOf(
     PluginDescriptor(
-        since = "203",
+        since = "201",
         until = "203.*",
-        sdkVersion = "IC-2020.3",
+        sdkVersion = "IC-2020.1",
         platformType = PlatformType.IdeaCommunity,
         dependencies = listOf("java", "Kotlin")
     ),
@@ -34,8 +34,10 @@ val plugins = listOf(
     )
 )
 
-val productName = System.getenv("PRODUCT_NAME") ?: "IC-2021.1"
+val productName = System.getenv("PRODUCT_NAME") ?: "IC-2020.1"
 val descriptor = plugins.first { it.sdkVersion == productName }
+
+logger.lifecycle("Building Plugin Distribution for ${descriptor.platformType} ${descriptor.sdkVersion}")
 
 // Import variables from gradle.properties file
 
