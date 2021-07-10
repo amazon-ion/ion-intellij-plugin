@@ -1,22 +1,10 @@
-# Github Actions Workflow created for testing and preparing the Ion Intellij Plugin:
-# - validate the Gradle Wrapper.
-# - run tests and verifyPlugin tasks.
-# - TODO: run buildPlugin task and prepare artifact for future tests.
-# - TODO: create a draft release.
-#
-# Workflow is triggered on push and pull_request events.
-#
-# Docs:
-# - GitHub Actions: https://help.github.com/en/actions
+name: build-pr
 
-name: build-master
 on:
-  push:
+  pull_request:
     paths-ignore:
       - 'doc/**'
       - '*.md'
-    branches:
-      - master
 
 jobs:
 

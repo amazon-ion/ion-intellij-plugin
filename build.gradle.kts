@@ -1,9 +1,41 @@
+import plugin.PluginDescriptor
+import plugin.PlatformType
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-plugins {
-    kotlin("jvm") version "1.4.30"
-    id("org.jetbrains.intellij") version "0.7.2"
+buildscript {
+    repositories {
+        mavenCentral()
+    }
 }
+
+plugins {
+    kotlin("jvm")
+    id("org.jetbrains.intellij") version "1.1.2"
+}
+
+repositories {
+    mavenCentral()
+}
+
+val plugins = listOf(
+    PluginDescriptor(
+        since = "203",
+        until = "203.*",
+        sdkVersion = "IC-2020.3",
+        platformType = PlatformType.IdeaCommunity,
+        dependencies = listOf("java", "Kotlin")
+    ),
+    PluginDescriptor(
+        since = "211",
+        until = "212.*",
+        sdkVersion = "IC-2021.1",
+        platformType = PlatformType.IdeaCommunity,
+        dependencies = listOf("java", "Kotlin")
+    )
+)
+
+val productName = System.getenv("PRODUCT_NAME") ?: "IC-2021.1"
+val descriptor = plugins.first { it.sdkVersion == productName }
 
 // Import variables from gradle.properties file
 
@@ -41,24 +73,20 @@ listOf("compileKotlin", "compileTestKotlin").forEach {
     }
 }
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     implementation(kotlin("stdlib"))
 }
 
 intellij {
-    pluginName = pluginName_
-    version = platformVersion
-    type = platformType
-    downloadSources = platformDownloadSources.toBoolean()
-    updateSinceUntilBuild = false
+    pluginName.set(pluginName_)
+    version.set(descriptor.sdkVersion)
+    type.set(platformType)
+    downloadSources.set(platformDownloadSources.toBoolean())
+    updateSinceUntilBuild.set(false)
 
     // Plugin Dependencies -> https://www.jetbrains.org/intellij/sdk/docs/basics/plugin_structure/plugin_dependencies.html
     // Example: platformPlugins = com.intellij.java, com.jetbrains.php:203.4449.22
-    setPlugins("java", "Kotlin")
+    plugins.set(descriptor.dependencies)
 }
 
 tasks {
@@ -67,12 +95,16 @@ tasks {
     findByName("buildSearchableOptions")?.enabled = false
 
     patchPluginXml {
-        version("2.0")
-        sinceBuild(pluginSinceBuild)
-        untilBuild(pluginUntilBuild)
+        version.set("2.0")
+        sinceBuild.set(pluginSinceBuild)
+        untilBuild.set(pluginUntilBuild)
 
-        pluginDescription(readResource(pluginDescriptionFile))
-        changeNotes(readResource(pluginChangeNotesFile))
+        pluginDescription.set(readResource(pluginDescriptionFile))
+        changeNotes.set(readResource(pluginChangeNotesFile))
+    }
+
+    publishPlugin {
+        token.set(System.getenv("PUBLISH_TOKEN"))
     }
 
     task("release") {
