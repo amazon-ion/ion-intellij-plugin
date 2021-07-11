@@ -1,23 +1,18 @@
-# Github Actions Workflow created for testing and preparing the Ion Intellij Plugin:
-# - validate the Gradle Wrapper.
-# - run tests and verifyPlugin tasks.
-# - TODO: run buildPlugin task and prepare artifact for future tests.
-# - TODO: create a draft release.
+
+# Github Action Workflow for building a new commit to the primary repo branch and publishing a new release to beta.
 #
-# Workflow is triggered on push and pull_request events.
+# Workflow is triggered on pushes into master.
 #
-# Docs:
+# Additional Docs:
 # - GitHub Actions: https://help.github.com/en/actions
 
 name: build-master
 on:
   push:
     paths-ignore:
-      - 'doc/**'
       - '*.md'
     branches:
       - master
-
 jobs:
 
   # Run Gradle Wrapper Validation Action to verify the wrapper's checksum
@@ -59,7 +54,7 @@ jobs:
       - name: Download JDK
         run: wget https://corretto.aws/downloads/latest/amazon-corretto-11-x64-linux-jdk.tar.gz --output-document jdk.tar.gz
 
-      # Setups JDK by using previously downloaded JDK.
+      # Setup JDK by using previously downloaded JDK.
       - name: Setup JDK
         uses: actions/setup-java@v1
         with:
@@ -100,6 +95,13 @@ jobs:
       # Run intellij:verifyPlugin task.
       - name: Verify Plugin
         run: ./gradlew verifyPlugin
+
+      # Publish plugin to beta channel
+      - name: Publish Beta Plugin
+        env:
+          PUBLISH_TOKEN: ${{ secrets.JETBRAINS_TOKEN }}
+          PUBLISH_CHANNEL: beta
+        run: ./gradlew --stacktrace publishPlugin
 
       # Upload plugin artifact to make it available in the next jobs
       - name: Upload artifact

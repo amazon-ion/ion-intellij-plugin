@@ -38,7 +38,7 @@ val plugins = listOf(
         platformType = PlatformType.IdeaCommunity,
         sourceFolder = "IC-211",
         kotlin = KotlinOptions(
-            apiVersion = "1.5"
+            apiVersion = "1.4"
         ),
         dependencies = listOf("java", "Kotlin")
     )
@@ -48,9 +48,8 @@ val defaultProductName =
     "IC-2020.2"
     // "IC-2021.1"
 val productName = System.getenv("PRODUCT_NAME") ?: defaultProductName
+val maybeGithubRunNumber = System.getenv("GITHUB_RUN_NUMBER")?.toInt()
 val descriptor = plugins.first { it.sdkVersion == productName }
-
-logger.lifecycle("Building Plugin Distribution for ${descriptor.platformType} ${descriptor.sdkVersion}")
 
 // Import variables from gradle.properties file
 val pluginGroup: String by project
@@ -58,6 +57,7 @@ val pluginGroup: String by project
 // `pluginName_` variable ends with `_` because of the collision with Kotlin magic getter in the `intellij` closure.
 // Read more about the issue: https://github.com/JetBrains/intellij-platform-plugin-template/issues/29
 val pluginName_: String by project
+val pluginVersion: String = pluginVersion(majorVersion = "2", minorVersion = "0")
 val pluginDescriptionFile: String by project
 val pluginChangeNotesFile: String by project
 
@@ -66,6 +66,8 @@ val packageVersion: String by project
 
 group = pluginGroup
 version = packageVersion
+
+logger.lifecycle("Building Amazon Ion $pluginVersion for ${descriptor.platformType} ${descriptor.sdkVersion}")
 
 dependencies {
     // compileOnly(kotlin("stdlib"))
@@ -122,7 +124,7 @@ tasks {
     }
 
     patchPluginXml {
-        version.set("2.0")
+        version.set(pluginVersion)
         sinceBuild.set(descriptor.since)
         untilBuild.set(descriptor.until)
 
@@ -132,6 +134,11 @@ tasks {
 
     publishPlugin {
         token.set(System.getenv("PUBLISH_TOKEN"))
+
+        // Publish to beta unless release is specified.
+        if (System.getenv("PUBLISH_CHANNEL") != "release") {
+            channels.set(listOf("beta"))
+        }
     }
 
     task("release") {
@@ -143,3 +150,13 @@ tasks {
  * Utility function to read a resource file.
  */
 fun readResource(name: String) = file("resources/$name").readText()
+
+/**
+ * Function which creates a plugin version.
+ */
+fun pluginVersion(majorVersion: String, minorVersion: String) =
+    listOf(
+        majorVersion,
+        minorVersion,
+        maybeGithubRunNumber?.toString() ?: "1-alpha"
+    ).joinToString(".")

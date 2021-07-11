@@ -1,31 +1,42 @@
+# Github Action Workflow for releasing a new stable version of the plugin.
+#
+# Workflow is triggered manually w/ proper access.
+#
+# Additional Docs:
+# - GitHub Actions: https://help.github.com/en/actions
+
 name: release
-
 on:
+  # Manually run workflow to dispatch.
   workflow_dispatch:
-
 jobs:
   release:
     strategy:
       matrix:
-        product: [ "IC-193", "IC-201", "IC-202", "IC-203", "IC-211" ]
+        product: [  "IC-2020.2", "IC-2021.1" ]
       max-parallel: 1
     env:
       PRODUCT_NAME: ${{ matrix.product }}
     runs-on: ubuntu-latest
     steps:
-      -  name: Checkout the repo
-         uses: actions/checkout@v2
-         with:
-           fetch-depth: 0
+      # Check out current repository
+      - name: Fetch Sources
+        uses: actions/checkout@v2
 
-      -  uses: actions/setup-java@v1
-         with:
-           java-version: '11'
-           java-package: jdk
-           architecture: x64
+      # Downloads JDK 11 AWS Corretto Build
+      - name: Download JDK
+        run: wget https://corretto.aws/downloads/latest/amazon-corretto-11-x64-linux-jdk.tar.gz --output-document jdk.tar.gz
 
-      -  name: Deploy to JetBrains
-         run: ./gradlew --stacktrace publishPlugin
-         env:
-           PRODUCT_NAME: ${{ matrix.product }}
-           JETBRAINS_TOKEN: ${{ secrets.JETBRAINS_TOKEN }}
+      # Setup JDK by using previously downloaded JDK.
+      - name: Setup JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: '11'
+          jdkFile: jdk.tar.gz
+
+      - name: Publish Stable Plugin
+        env:
+          PRODUCT_NAME: ${{ matrix.product }}
+          PUBLISH_TOKEN: ${{ secrets.JETBRAINS_TOKEN }}
+          PUBLISH_CHANNEL: release
+        run: ./gradlew --stacktrace publishPlugin
