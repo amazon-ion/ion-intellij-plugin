@@ -31,6 +31,8 @@ jobs:
       matrix:
         product: [ "IC-2020.2", "IC-2021.1" ]
       max-parallel: 5
+    env:
+      PRODUCT_NAME: ${{ matrix.product }}
     outputs:
       name: ${{ steps.properties.outputs.name }}
       version: ${{ steps.properties.outputs.version }}
