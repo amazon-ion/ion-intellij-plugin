@@ -70,7 +70,7 @@ version = packageVersion
 logger.lifecycle("Building Amazon Ion $pluginVersion for ${descriptor.platformType} ${descriptor.sdkVersion}")
 
 dependencies {
-    // compileOnly(kotlin("stdlib"))
+    // Kotlin runtime dependency is provided by the IntelliJ platform.
 }
 
 intellij {
