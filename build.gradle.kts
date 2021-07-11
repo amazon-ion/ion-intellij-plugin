@@ -1,6 +1,8 @@
 import plugin.PluginDescriptor
+import plugin.PluginDescriptor.KotlinOptions
 import plugin.PlatformType
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 
 buildscript {
     repositories {
@@ -19,10 +21,14 @@ repositories {
 
 val plugins = listOf(
     PluginDescriptor(
-        since = "201",
+        since = "202",
         until = "203.*",
-        sdkVersion = "IC-2020.1",
+        sdkVersion = "IC-2020.2",
         platformType = PlatformType.IdeaCommunity,
+        sourceFolder = "IC-202",
+        kotlin = KotlinOptions(
+            apiVersion = "1.3"
+        ),
         dependencies = listOf("java", "Kotlin")
     ),
     PluginDescriptor(
@@ -30,60 +36,46 @@ val plugins = listOf(
         until = "212.*",
         sdkVersion = "IC-2021.1",
         platformType = PlatformType.IdeaCommunity,
+        sourceFolder = "IC-211",
+        kotlin = KotlinOptions(
+            apiVersion = "1.5"
+        ),
         dependencies = listOf("java", "Kotlin")
     )
 )
 
-val productName = System.getenv("PRODUCT_NAME") ?: "IC-2020.1"
+val defaultProductName =
+    "IC-2020.2"
+    // "IC-2021.1"
+val productName = System.getenv("PRODUCT_NAME") ?: defaultProductName
 val descriptor = plugins.first { it.sdkVersion == productName }
 
 logger.lifecycle("Building Plugin Distribution for ${descriptor.platformType} ${descriptor.sdkVersion}")
 
 // Import variables from gradle.properties file
-
 val pluginGroup: String by project
 
 // `pluginName_` variable ends with `_` because of the collision with Kotlin magic getter in the `intellij` closure.
 // Read more about the issue: https://github.com/JetBrains/intellij-platform-plugin-template/issues/29
 val pluginName_: String by project
-val pluginSinceBuild: String by project
-val pluginUntilBuild: String by project
-val pluginVerifierIdeVersions: String by project
 val pluginDescriptionFile: String by project
 val pluginChangeNotesFile: String by project
 
-val platformType: String by project
 val platformVersion: String by project
-val platformPlugins: String by project
-val platformDownloadSources: String by project
-
 val packageVersion: String by project
 
 group = pluginGroup
 version = packageVersion
 
-tasks.withType<JavaCompile> {
-    sourceCompatibility = "11"
-    targetCompatibility = "11"
-}
-
-sourceSets["main"].java.srcDirs("src/main/gen")
-
-listOf("compileKotlin", "compileTestKotlin").forEach {
-    tasks.getByName<KotlinCompile>(it) {
-        kotlinOptions.jvmTarget = "11"
-    }
-}
-
 dependencies {
-    implementation(kotlin("stdlib"))
+    // compileOnly(kotlin("stdlib"))
 }
 
 intellij {
     pluginName.set(pluginName_)
     version.set(descriptor.sdkVersion)
-    type.set(platformType)
-    downloadSources.set(platformDownloadSources.toBoolean())
+    type.set(descriptor.platformType.acronym)
+    downloadSources.set(true)
     updateSinceUntilBuild.set(false)
 
     // Plugin Dependencies -> https://www.jetbrains.org/intellij/sdk/docs/basics/plugin_structure/plugin_dependencies.html
@@ -91,15 +83,48 @@ intellij {
     plugins.set(descriptor.dependencies)
 }
 
+sourceSets {
+    main {
+        withConvention(KotlinSourceSet::class) {
+            kotlin.srcDir("src/${descriptor.sourceFolder}/kotlin")
+        }
+
+        resources {
+            srcDir("src/${descriptor.sourceFolder}/resources")
+        }
+
+        java {
+            srcDirs("src/main/gen")
+        }
+    }
+}
+
 tasks {
     // Disable searchable options since it is failing during the build
     // Re-evaluate in the future if it starts to succeed.
     findByName("buildSearchableOptions")?.enabled = false
 
+    compileKotlin {
+        kotlinOptions {
+            apiVersion = descriptor.kotlin.apiVersion
+            jvmTarget = "11"
+        }
+    }
+
+    withType<KotlinCompile> {
+        kotlinOptions {
+            jvmTarget = "11"
+        }
+    }
+
+    buildPlugin {
+        archiveClassifier.set(descriptor.sdkVersion)
+    }
+
     patchPluginXml {
         version.set("2.0")
-        sinceBuild.set(pluginSinceBuild)
-        untilBuild.set(pluginUntilBuild)
+        sinceBuild.set(descriptor.since)
+        untilBuild.set(descriptor.until)
 
         pluginDescription.set(readResource(pluginDescriptionFile))
         changeNotes.set(readResource(pluginChangeNotesFile))

@@ -7,11 +7,6 @@ import com.intellij.formatting.FormattingModel
 import com.intellij.formatting.FormattingModelBuilder
 import com.intellij.formatting.FormattingModelProvider
 
-/**
- * Creates the block model for an Ion file.
- *
- * The block model will determine how elements are spaced, indented and aligned.
- */
 class IonFormattingModelBuilder : FormattingModelBuilder {
     override fun createModel(formattingContext: FormattingContext): FormattingModel {
         val element = formattingContext.psiElement

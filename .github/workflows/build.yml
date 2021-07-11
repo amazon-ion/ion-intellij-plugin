@@ -41,7 +41,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        product: [ "IC-2020.3", "IC-2021.1" ]
+        product: [ "IC-2020.2", "IC-2021.1" ]
       max-parallel: 5
     outputs:
       name: ${{ steps.properties.outputs.name }}
