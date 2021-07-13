@@ -44,9 +44,7 @@ val plugins = listOf(
     )
 )
 
-val defaultProductName =
-    "IC-2020.2"
-    // "IC-2021.1"
+val defaultProductName = "IC-2020.2"
 val productName = System.getenv("PRODUCT_NAME") ?: defaultProductName
 val maybeGithubRunNumber = System.getenv("GITHUB_RUN_NUMBER")?.toInt()
 val descriptor = plugins.first { it.sdkVersion == productName }
@@ -57,7 +55,7 @@ val pluginGroup: String by project
 // `pluginName_` variable ends with `_` because of the collision with Kotlin magic getter in the `intellij` closure.
 // Read more about the issue: https://github.com/JetBrains/intellij-platform-plugin-template/issues/29
 val pluginName_: String by project
-val pluginVersion: String = pluginVersion(majorVersion = "2", minorVersion = "0")
+val pluginVersion: String = pluginVersion(majorVersion = "2", minorVersion = "1")
 val pluginDescriptionFile: String by project
 val pluginChangeNotesFile: String by project
 
@@ -140,10 +138,6 @@ tasks {
             channels.set(listOf("beta"))
         }
     }
-
-    task("release") {
-        dependsOn("buildPlugin")
-    }
 }
 
 /**
@@ -158,5 +152,5 @@ fun pluginVersion(majorVersion: String, minorVersion: String) =
     listOf(
         majorVersion,
         minorVersion,
-        maybeGithubRunNumber?.toString() ?: "1-alpha"
+        maybeGithubRunNumber?.let { "$it-${descriptor.sdkVersion}" } ?: "0-${descriptor.sdkVersion}+alpha"
     ).joinToString(".")
