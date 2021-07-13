@@ -1,64 +1,104 @@
+import plugin.PluginDescriptor
+import plugin.PluginDescriptor.KotlinOptions
+import plugin.PlatformType
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+}
 
 plugins {
-    kotlin("jvm") version "1.4.30"
-    id("org.jetbrains.intellij") version "0.7.2"
-}
-
-// Import variables from gradle.properties file
-
-val pluginGroup: String by project
-
-// `pluginName_` variable ends with `_` because of the collision with Kotlin magic getter in the `intellij` closure.
-// Read more about the issue: https://github.com/JetBrains/intellij-platform-plugin-template/issues/29
-val pluginName_: String by project
-val pluginSinceBuild: String by project
-val pluginUntilBuild: String by project
-val pluginVerifierIdeVersions: String by project
-val pluginDescriptionFile: String by project
-val pluginChangeNotesFile: String by project
-
-val platformType: String by project
-val platformVersion: String by project
-val platformPlugins: String by project
-val platformDownloadSources: String by project
-
-val packageVersion: String by project
-
-group = pluginGroup
-version = packageVersion
-
-tasks.withType<JavaCompile> {
-    sourceCompatibility = "11"
-    targetCompatibility = "11"
-}
-
-sourceSets["main"].java.srcDirs("src/main/gen")
-
-listOf("compileKotlin", "compileTestKotlin").forEach {
-    tasks.getByName<KotlinCompile>(it) {
-        kotlinOptions.jvmTarget = "11"
-    }
+    kotlin("jvm")
+    id("org.jetbrains.intellij") version "1.1.2"
 }
 
 repositories {
     mavenCentral()
 }
 
+val plugins = listOf(
+    PluginDescriptor(
+        since = "202",
+        until = "203.*",
+        sdkVersion = "IC-2020.2",
+        platformType = PlatformType.IdeaCommunity,
+        sourceFolder = "IC-202",
+        kotlin = KotlinOptions(
+            apiVersion = "1.3"
+        ),
+        dependencies = listOf("java", "Kotlin")
+    ),
+    PluginDescriptor(
+        since = "211",
+        until = "212.*",
+        sdkVersion = "IC-2021.1",
+        platformType = PlatformType.IdeaCommunity,
+        sourceFolder = "IC-211",
+        kotlin = KotlinOptions(
+            apiVersion = "1.4"
+        ),
+        dependencies = listOf("java", "Kotlin")
+    )
+)
+
+val defaultProductName =
+    "IC-2020.2"
+    // "IC-2021.1"
+val productName = System.getenv("PRODUCT_NAME") ?: defaultProductName
+val maybeGithubRunNumber = System.getenv("GITHUB_RUN_NUMBER")?.toInt()
+val descriptor = plugins.first { it.sdkVersion == productName }
+
+// Import variables from gradle.properties file
+val pluginGroup: String by project
+
+// `pluginName_` variable ends with `_` because of the collision with Kotlin magic getter in the `intellij` closure.
+// Read more about the issue: https://github.com/JetBrains/intellij-platform-plugin-template/issues/29
+val pluginName_: String by project
+val pluginVersion: String = pluginVersion(majorVersion = "2", minorVersion = "0")
+val pluginDescriptionFile: String by project
+val pluginChangeNotesFile: String by project
+
+val platformVersion: String by project
+val packageVersion: String by project
+
+group = pluginGroup
+version = packageVersion
+
+logger.lifecycle("Building Amazon Ion $pluginVersion for ${descriptor.platformType} ${descriptor.sdkVersion}")
+
 dependencies {
-    implementation(kotlin("stdlib"))
+    // Kotlin runtime dependency is provided by the IntelliJ platform.
 }
 
 intellij {
-    pluginName = pluginName_
-    version = platformVersion
-    type = platformType
-    downloadSources = platformDownloadSources.toBoolean()
-    updateSinceUntilBuild = false
+    pluginName.set(pluginName_)
+    version.set(descriptor.sdkVersion)
+    type.set(descriptor.platformType.acronym)
+    downloadSources.set(true)
+    updateSinceUntilBuild.set(false)
 
     // Plugin Dependencies -> https://www.jetbrains.org/intellij/sdk/docs/basics/plugin_structure/plugin_dependencies.html
     // Example: platformPlugins = com.intellij.java, com.jetbrains.php:203.4449.22
-    setPlugins("java", "Kotlin")
+    plugins.set(descriptor.dependencies)
+}
+
+sourceSets {
+    main {
+        withConvention(KotlinSourceSet::class) {
+            kotlin.srcDir("src/${descriptor.sourceFolder}/kotlin")
+        }
+
+        resources {
+            srcDir("src/${descriptor.sourceFolder}/resources")
+        }
+
+        java {
+            srcDirs("src/main/gen")
+        }
+    }
 }
 
 tasks {
@@ -66,13 +106,39 @@ tasks {
     // Re-evaluate in the future if it starts to succeed.
     findByName("buildSearchableOptions")?.enabled = false
 
-    patchPluginXml {
-        version("2.0")
-        sinceBuild(pluginSinceBuild)
-        untilBuild(pluginUntilBuild)
+    compileKotlin {
+        kotlinOptions {
+            apiVersion = descriptor.kotlin.apiVersion
+            jvmTarget = "11"
+        }
+    }
 
-        pluginDescription(readResource(pluginDescriptionFile))
-        changeNotes(readResource(pluginChangeNotesFile))
+    withType<KotlinCompile> {
+        kotlinOptions {
+            jvmTarget = "11"
+        }
+    }
+
+    buildPlugin {
+        archiveClassifier.set(descriptor.sdkVersion)
+    }
+
+    patchPluginXml {
+        version.set(pluginVersion)
+        sinceBuild.set(descriptor.since)
+        untilBuild.set(descriptor.until)
+
+        pluginDescription.set(readResource(pluginDescriptionFile))
+        changeNotes.set(readResource(pluginChangeNotesFile))
+    }
+
+    publishPlugin {
+        token.set(System.getenv("PUBLISH_TOKEN"))
+
+        // Publish to beta unless release is specified.
+        if (System.getenv("PUBLISH_CHANNEL") != "release") {
+            channels.set(listOf("beta"))
+        }
     }
 
     task("release") {
@@ -84,3 +150,13 @@ tasks {
  * Utility function to read a resource file.
  */
 fun readResource(name: String) = file("resources/$name").readText()
+
+/**
+ * Function which creates a plugin version.
+ */
+fun pluginVersion(majorVersion: String, minorVersion: String) =
+    listOf(
+        majorVersion,
+        minorVersion,
+        maybeGithubRunNumber?.toString() ?: "1-alpha"
+    ).joinToString(".")

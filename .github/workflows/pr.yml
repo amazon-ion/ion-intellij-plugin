@@ -1,18 +1,16 @@
-
-# Github Action Workflow for building a new commit to the primary repo branch and publishing a new release to beta.
+# Github Action Workflow for building a pull request commit and validating that the commit builds for all
+# release versions of the plugin.
 #
-# Workflow is triggered on pushes into master.
+# Workflow is triggered on pull requests to the repo.
 #
 # Additional Docs:
 # - GitHub Actions: https://help.github.com/en/actions
 
-name: build-master
+name: build-pr
 on:
-  push:
+  pull_request:
     paths-ignore:
       - '*.md'
-    branches:
-      - master
 jobs:
 
   # Run Gradle Wrapper Validation Action to verify the wrapper's checksum
@@ -95,13 +93,6 @@ jobs:
       # Run intellij:verifyPlugin task.
       - name: Verify Plugin
         run: ./gradlew verifyPlugin
-
-      # Publish plugin to beta channel
-      - name: Publish Beta Plugin
-        env:
-          PUBLISH_TOKEN: ${{ secrets.JETBRAINS_TOKEN }}
-          PUBLISH_CHANNEL: beta
-        run: ./gradlew --stacktrace publishPlugin
 
       # Upload plugin artifact to make it available in the next jobs
       - name: Upload artifact
