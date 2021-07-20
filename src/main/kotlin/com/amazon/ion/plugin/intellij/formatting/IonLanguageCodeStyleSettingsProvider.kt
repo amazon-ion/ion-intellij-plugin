@@ -23,6 +23,12 @@ class IonLanguageCodeStyleSettingsProvider : LanguageCodeStyleSettingsProvider()
     }
 
     override fun customizeDefaults(commonSettings: CommonCodeStyleSettings, indentOptions: IndentOptions) {
+        // When using spaces or tabs: Use two spaces for indents.
+        indentOptions.INDENT_SIZE = 2
+
+        // When using tabs: Treat a tab as two spaces.
+        indentOptions.TAB_SIZE = 2
+
         super.customizeDefaults(commonSettings, indentOptions)
     }
 
