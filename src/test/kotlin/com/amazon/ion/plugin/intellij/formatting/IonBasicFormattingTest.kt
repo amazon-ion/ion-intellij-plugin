@@ -30,16 +30,16 @@ class IonBasicFormattingTest : IonFormatterTestBase() {
         """,
         """
         {
-            // Comments
-            another: {
-                struct: {
-                    // Upper struct comment
-                    memberA: true,
-                    // Inner struct comment
-                    memberB: false
-                }
+          // Comments
+          another: {
+            struct: {
+              // Upper struct comment
+              memberA: true,
+              // Inner struct comment
+              memberB: false
             }
-            // Around
+          }
+          // Around
         }
         """
     )
@@ -62,24 +62,24 @@ class IonBasicFormattingTest : IonFormatterTestBase() {
         """,
         """
         {
-            // Comments
-            another: {
-                struct: {
-                    // Upper struct comment
-                    memberA: true,
-                    // Inner struct comment
-                    memberB: false,
-                    transform: (join
-                        (inner
-                            element
-                        )
-                        {
-                            element: "value"
-                        }
-                    )
+          // Comments
+          another: {
+            struct: {
+              // Upper struct comment
+              memberA: true,
+              // Inner struct comment
+              memberB: false,
+              transform: (join
+                (inner
+                  element
+                )
+                {
+                  element: "value"
                 }
+              )
             }
-            // Around
+          }
+          // Around
         }
         """
     )
@@ -95,20 +95,20 @@ class IonBasicFormattingTest : IonFormatterTestBase() {
             )
         """,
         """
-            (expression // special case comment inline with expression does not move
-                (inner
-                    expression
-                )
-                {
-                    memberA: true
-                }
-                // comment
-                value
-                // comment struct
-                {
-                    memberB: true
-                }
-            )
+        (expression // special case comment inline with expression does not move
+          (inner
+            expression
+          )
+          {
+            memberA: true
+          }
+          // comment
+          value
+          // comment struct
+          {
+            memberB: true
+          }
+        )
         """,
     )
 

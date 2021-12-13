@@ -1,10 +1,10 @@
 {
-    // Comments
-    another: {
-        struct: {
-            // Inner struct comment
-            member: true
-        }
+  // Comments
+  another: {
+    struct: {
+      // Inner struct comment
+      member: true
     }
-    // Around
+  }
+  // Around
 }
