@@ -33,7 +33,7 @@ val plugins = listOf(
     ),
     PluginDescriptor(
         since = "211",
-        until = "212.*",
+        until = "213.*",
         sdkVersion = "IC-2021.1",
         platformType = PlatformType.IdeaCommunity,
         sourceFolder = "IC-211",
