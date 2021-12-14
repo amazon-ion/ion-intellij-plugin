@@ -1,0 +1,11 @@
+{
+   key: '''Hello'''
+        '''World''',
+   list: [
+      '''Hello'''
+      '''World'''
+   ],
+   sexp: ('''Hello '''
+          '''World''')
+}
+

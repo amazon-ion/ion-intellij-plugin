@@ -18,6 +18,8 @@ import static com.amazon.ion.plugin.intellij.helpers.ContentCorrectnessHelper.*;
 %eof{  return;
 %eof}
 
+%debug
+
 %{
     private java.util.Stack<Integer> _zzStateStack = new java.util.Stack<Integer>();
 %}

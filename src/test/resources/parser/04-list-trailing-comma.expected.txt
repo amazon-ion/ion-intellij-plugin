@@ -1,0 +1,13 @@
+Ion File
+  IonValueImpl(VALUE)
+    IonContainerImpl(CONTAINER)
+      IonListImpl(LIST)
+        PsiElement(LBRACKET)('[')
+        PsiWhiteSpace(' ')
+        IonElementsImpl(ELEMENTS)
+          IonValueImpl(VALUE)
+            IonSymbolImpl(SYMBOL)
+              PsiElement(IDENTIFIER)('key')
+          PsiElement(COMMA)(',')
+        PsiWhiteSpace(' ')
+        PsiElement(RBRACKET)(']')

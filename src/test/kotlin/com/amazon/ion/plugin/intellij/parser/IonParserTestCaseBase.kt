@@ -12,10 +12,19 @@ abstract class IonParserTestCaseBase(dataPath: String) :
         /* lowerCaseFirstLetter */ true,
         IonParserDefinition()
 ) {
+    private val classLoader = this::class.java.classLoader
+
     override fun getTestDataPath(): String = "src/test/resources/test-data"
 
+    fun fileScenario(name: String, expected: String? = null) {
+        val parsedFile = readClasspathFile("parser/$name.ion")
+        val expectedFile = readClasspathFile(expected ?: "parser/$name.expected.txt")
+
+        doTest(parsedFile, expectedFile)
+    }
+
     fun doTest(@Language("Ion") text: String, expectedTree: String, skipSpaces: Boolean? = null, includeRanges: Boolean? = null) {
-        val parsedFile = parseFile("test-input.ion", text.trimIndent())
+        val parsedFile = createPsiFile("test-input.ion", text.trimIndent())
         val treeText = toParseTreeText(
             parsedFile,
             skipSpaces ?: skipSpaces(),
@@ -24,4 +33,10 @@ abstract class IonParserTestCaseBase(dataPath: String) :
 
         TestCase.assertEquals(expectedTree.trimIndent(), treeText.trim())
     }
+
+    private fun readClasspathFile(name: String) =
+        String(
+            requireNotNull(classLoader.getResourceAsStream(name)?.use { it.readAllBytes() }) { "Could not find file $name" },
+            Charsets.UTF_8
+        )
 }

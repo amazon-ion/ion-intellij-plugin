@@ -4,7 +4,6 @@ package com.amazon.ion.plugin.intellij.parser
  * Parsing tests for basic structures.
  */
 class IonBasicParsingTest : IonParserTestCaseBase(dataPath = "basic") {
-
     fun `test struct`() = doTest(
         """
             { key: value }
@@ -136,6 +135,32 @@ class IonBasicParsingTest : IonParserTestCaseBase(dataPath = "basic") {
     fun `test sexp with SEXPRESSION operator`() = doTest(
         """
             (test element)
+        """,
+        """
+            Ion File
+              IonValueImpl(VALUE)
+                IonContainerImpl(CONTAINER)
+                  IonSexpressionImpl(SEXPRESSION)
+                    PsiElement(LPAREN)('(')
+                    IonSexpressionOperatorImpl(SEXPRESSION_OPERATOR)
+                      IonSymbolImpl(SYMBOL)
+                        PsiElement(IDENTIFIER)('test')
+                    PsiWhiteSpace(' ')
+                    IonAtomsImpl(ATOMS)
+                      IonValueImpl(VALUE)
+                        IonSymbolImpl(SYMBOL)
+                          PsiElement(IDENTIFIER)('element')
+                    PsiElement(RPAREN)(')')
+        """
+    )
+
+    fun `test multiline qqq string`() = doTest(
+        """
+            (
+                test
+                '''hello'''
+                '''another'''
+            )
         """,
         """
             Ion File

@@ -418,22 +418,37 @@ public class IonParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // QQQ_START (QQQ_VALUE)? QQQ_END
+  // (QQQ_START (QQQ_VALUE)? QQQ_END)+
   public static boolean qqq_string(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "qqq_string")) return false;
     if (!nextTokenIs(b, QQQ_START)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, QQQ_START);
-    r = r && qqq_string_1(b, l + 1);
-    r = r && consumeToken(b, QQQ_END);
+    r = qqq_string_0(b, l + 1);
+    while (r) {
+      int c = current_position_(b);
+      if (!qqq_string_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "qqq_string", c)) break;
+    }
     exit_section_(b, m, QQQ_STRING, r);
     return r;
   }
 
+  // QQQ_START (QQQ_VALUE)? QQQ_END
+  private static boolean qqq_string_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "qqq_string_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, QQQ_START);
+    r = r && qqq_string_0_1(b, l + 1);
+    r = r && consumeToken(b, QQQ_END);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
   // (QQQ_VALUE)?
-  private static boolean qqq_string_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "qqq_string_1")) return false;
+  private static boolean qqq_string_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "qqq_string_0_1")) return false;
     consumeToken(b, QQQ_VALUE);
     return true;
   }
