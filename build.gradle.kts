@@ -52,6 +52,17 @@ val plugins = listOf(
             apiVersion = "1.5"
         ),
         dependencies = listOf("java", "Kotlin")
+    ),
+    PluginDescriptor(
+        since = "221",
+        until = "221.*",
+        sdkVersion = "IC-2022.1",
+        platformType = PlatformType.IdeaCommunity,
+        sourceFolder = "IC-221",
+        kotlin = KotlinOptions(
+            apiVersion = "1.5"
+        ),
+        dependencies = listOf("java", "Kotlin")
     )
 )
 
