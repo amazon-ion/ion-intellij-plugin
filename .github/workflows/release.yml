@@ -13,7 +13,7 @@ jobs:
   release:
     strategy:
       matrix:
-        product: [  "IC-2020.2", "IC-2021.1" ]
+        product: [  "IC-2020.2", "IC-2021.1", "IC-2022.1" ]
       max-parallel: 1
     env:
       PRODUCT_NAME: ${{ matrix.product }}
