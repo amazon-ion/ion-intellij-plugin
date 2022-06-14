@@ -44,7 +44,7 @@ val plugins = listOf(
     ),
     PluginDescriptor(
         since = "221",
-        until = "221.*",
+        until = "222.*",
         sdkVersion = "IC-2022.1",
         platformType = PlatformType.IdeaCommunity,
         sourceFolder = "IC-221",
