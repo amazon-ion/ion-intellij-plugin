@@ -66,7 +66,7 @@ val pluginGroup: String by project
 // `pluginName_` variable ends with `_` because of the collision with Kotlin magic getter in the `intellij` closure.
 // Read more about the issue: https://github.com/JetBrains/intellij-platform-plugin-template/issues/29
 val pluginName_: String by project
-val pluginVersion: String = pluginVersion(majorVersion = "2", minorVersion = "1")
+val pluginVersion: String = pluginVersion(major = "2", minor = "1", patch = "1")
 val pluginDescriptionFile: String by project
 val pluginChangeNotesFile: String by project
 
@@ -159,9 +159,10 @@ fun readResource(name: String) = file("resources/$name").readText()
 /**
  * Function which creates a plugin version.
  */
-fun pluginVersion(majorVersion: String, minorVersion: String) =
+fun pluginVersion(major: String, minor: String, patch: String) =
     listOf(
-        majorVersion,
-        minorVersion,
+        major,
+        minor,
+        patch,
         maybeGithubRunNumber?.let { "$it-${descriptor.sdkVersion}" } ?: "0-${descriptor.sdkVersion}+alpha"
     ).joinToString(".")

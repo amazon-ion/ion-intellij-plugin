@@ -6,9 +6,14 @@
 # - GitHub Actions: https://help.github.com/en/actions
 
 name: release
+
 on:
-  # Manually run workflow to dispatch.
-  workflow_dispatch:
+  release:
+    types: [created]
+
+env:
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 jobs:
   release:
     strategy:
@@ -22,6 +27,18 @@ jobs:
       # Check out current repository
       - name: Fetch Sources
         uses: actions/checkout@v2
+      
+      # Generate resources/plugin-changenotes.html
+      - name: Generate Changenotes
+        run: |
+          gh release view --json body --jq '{ text: .body }' | gh api \
+            --method POST \
+            -H "Accept: application/vnd.github.v3+json" \
+            --input - \
+            /markdown \
+            > resources/plugin-changenotes.html
+      - name: Log Changenotes Content
+        run: cat resources/plugin-changenotes.html
 
       # Downloads JDK 11 AWS Corretto Build
       - name: Download JDK
