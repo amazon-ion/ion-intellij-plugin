@@ -11,14 +11,14 @@ import static com.amazon.ion.plugin.intellij.psi.IonTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.amazon.ion.plugin.intellij.psi.*;
 
-public class IonValueImpl extends ASTWrapperPsiElement implements IonValue {
+public class IonSexpressionElementsImpl extends ASTWrapperPsiElement implements IonSexpressionElements {
 
-  public IonValueImpl(@NotNull ASTNode node) {
+  public IonSexpressionElementsImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull IonVisitor visitor) {
-    visitor.visitValue(this);
+    visitor.visitSexpressionElements(this);
   }
 
   @Override
@@ -29,38 +29,14 @@ public class IonValueImpl extends ASTWrapperPsiElement implements IonValue {
 
   @Override
   @NotNull
-  public List<IonAnnotation> getAnnotationList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, IonAnnotation.class);
+  public List<IonSexpressionAtom> getSexpressionAtomList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, IonSexpressionAtom.class);
   }
 
   @Override
   @Nullable
-  public IonBlob getBlob() {
-    return findChildByClass(IonBlob.class);
-  }
-
-  @Override
-  @Nullable
-  public IonClob getClob() {
-    return findChildByClass(IonClob.class);
-  }
-
-  @Override
-  @Nullable
-  public IonContainer getContainer() {
-    return findChildByClass(IonContainer.class);
-  }
-
-  @Override
-  @Nullable
-  public IonString getString() {
-    return findChildByClass(IonString.class);
-  }
-
-  @Override
-  @Nullable
-  public IonSymbol getSymbol() {
-    return findChildByClass(IonSymbol.class);
+  public IonSexpressionOperator getSexpressionOperator() {
+    return findChildByClass(IonSexpressionOperator.class);
   }
 
 }

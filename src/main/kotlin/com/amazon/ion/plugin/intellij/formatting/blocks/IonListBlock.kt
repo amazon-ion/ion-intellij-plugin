@@ -15,7 +15,7 @@ class IonListBlock(
     )
 
     override val childContainerTypes: Set<IElementType> = setOf(
-        IonTypes.ELEMENTS
+        IonTypes.LIST_ELEMENTS
     )
 
     override val containerWrapperTypes: Set<IElementType> = setOf(

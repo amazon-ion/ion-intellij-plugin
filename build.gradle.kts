@@ -55,7 +55,7 @@ val plugins = listOf(
     )
 )
 
-val defaultProductName = "IC-2020.2"
+val defaultProductName = "IC-2022.1"
 val productName = System.getenv("PRODUCT_NAME") ?: defaultProductName
 val maybeGithubRunNumber = System.getenv("GITHUB_RUN_NUMBER")?.toInt()
 val descriptor = plugins.first { it.sdkVersion == productName }

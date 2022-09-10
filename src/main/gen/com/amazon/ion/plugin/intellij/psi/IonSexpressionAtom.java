@@ -5,9 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface IonElements extends PsiElement {
+public interface IonSexpressionAtom extends PsiElement {
 
-  @NotNull
-  List<IonValue> getValueList();
+  @Nullable
+  IonValue getValue();
 
 }

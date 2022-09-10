@@ -25,7 +25,7 @@ class IonSExpressionBlock(
     )
 
     override val childContainerTypes: Set<IElementType> = setOf(
-        IonTypes.ATOMS
+        IonTypes.SEXPRESSION_ELEMENTS
     )
 
     override val containerWrapperTypes: Set<IElementType> = setOf(

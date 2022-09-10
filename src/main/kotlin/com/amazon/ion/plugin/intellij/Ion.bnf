@@ -21,11 +21,13 @@ struct ::= LBRACE [members] RBRACE {pin=1}
 members ::= struct_pair*
 pair ::= COMMENT* (key SEPARATOR value)
 key ::= (QUOTE KEY_NAME QUOTE) | (QQUOTE KEY_NAME QQUOTE) | (QQQUOTE KEY_NAME QQQUOTE) | KEY_NAME {methods=[getKeyName]}
-list ::= LBRACKET [elements] RBRACKET {pin=1}
-elements ::= list_element*
-sexpression ::= (LPAREN [sexpression_operator] [atoms] RPAREN)
+list ::= LBRACKET [list_elements] RBRACKET {pin=1}
+list_elements ::= list_element*
+sexpression ::= (LPAREN [sexpression_elements] RPAREN)
+sexpression_elements ::= [sexpression_operator] atoms*
 sexpression_operator ::= (annotation)* (symbol)
-atoms ::= sexpression_atom+
+sexpression_atom ::= OPERATOR | value {pin(".*")=1 recoverWhile=not_paren_or_next_member}
+
 blob ::= LOB_START (BLOB_VALUE | BAD_CHARACTER) LOB_END
 clob ::= LOB_START (string) LOB_END
 qqq_string ::= QQQ_START (QQQ_VALUE)? QQQ_END
@@ -36,7 +38,7 @@ symbol ::= (IDENTIFIER | q_string)
 annotation ::= (IDENTIFIER | q_string) ANNOTATION_SEPARATOR
 value ::= (annotation)* (string | symbol | blob | clob | INTEGER | DECIMAL | HEXINT | BININT | BOOLEAN | NULL | IDENTIFIER | TIMESTAMP | container) {methods=[getValueAsString]}
 
-private sexpression_atom ::= OPERATOR | value {pin(".*")=1 recoverWhile=not_paren_or_next_member}
+private atoms ::= sexpression_atom+
 private struct_pair ::= pair (COMMA | &RBRACE) {pin=1 recoverWhile=not_brace_or_next_pair}
 private list_element ::= value (COMMA | &RBRACKET) {pin=1 recoverWhile=not_bracket_or_next_value}
 

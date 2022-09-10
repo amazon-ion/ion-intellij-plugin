@@ -9,19 +9,20 @@ import com.amazon.ion.plugin.intellij.psi.impl.*;
 public interface IonTypes {
 
   IElementType ANNOTATION = new IonElementType("ANNOTATION");
-  IElementType ATOMS = new IonElementType("ATOMS");
   IElementType BLOB = new IonElementType("BLOB");
   IElementType CLOB = new IonElementType("CLOB");
   IElementType CONTAINER = new IonElementType("CONTAINER");
-  IElementType ELEMENTS = new IonElementType("ELEMENTS");
   IElementType KEY = new IonElementType("KEY");
   IElementType LIST = new IonElementType("LIST");
+  IElementType LIST_ELEMENTS = new IonElementType("LIST_ELEMENTS");
   IElementType MEMBERS = new IonElementType("MEMBERS");
   IElementType PAIR = new IonElementType("PAIR");
   IElementType QQQ_STRING = new IonElementType("QQQ_STRING");
   IElementType QQ_STRING = new IonElementType("QQ_STRING");
   IElementType Q_STRING = new IonElementType("Q_STRING");
   IElementType SEXPRESSION = new IonElementType("SEXPRESSION");
+  IElementType SEXPRESSION_ATOM = new IonElementType("SEXPRESSION_ATOM");
+  IElementType SEXPRESSION_ELEMENTS = new IonElementType("SEXPRESSION_ELEMENTS");
   IElementType SEXPRESSION_OPERATOR = new IonElementType("SEXPRESSION_OPERATOR");
   IElementType STRING = new IonElementType("STRING");
   IElementType STRUCT = new IonElementType("STRUCT");
@@ -71,9 +72,6 @@ public interface IonTypes {
       if (type == ANNOTATION) {
         return new IonAnnotationImpl(node);
       }
-      else if (type == ATOMS) {
-        return new IonAtomsImpl(node);
-      }
       else if (type == BLOB) {
         return new IonBlobImpl(node);
       }
@@ -83,14 +81,14 @@ public interface IonTypes {
       else if (type == CONTAINER) {
         return new IonContainerImpl(node);
       }
-      else if (type == ELEMENTS) {
-        return new IonElementsImpl(node);
-      }
       else if (type == KEY) {
         return new IonKeyImpl(node);
       }
       else if (type == LIST) {
         return new IonListImpl(node);
+      }
+      else if (type == LIST_ELEMENTS) {
+        return new IonListElementsImpl(node);
       }
       else if (type == MEMBERS) {
         return new IonMembersImpl(node);
@@ -109,6 +107,12 @@ public interface IonTypes {
       }
       else if (type == SEXPRESSION) {
         return new IonSexpressionImpl(node);
+      }
+      else if (type == SEXPRESSION_ATOM) {
+        return new IonSexpressionAtomImpl(node);
+      }
+      else if (type == SEXPRESSION_ELEMENTS) {
+        return new IonSexpressionElementsImpl(node);
       }
       else if (type == SEXPRESSION_OPERATOR) {
         return new IonSexpressionOperatorImpl(node);

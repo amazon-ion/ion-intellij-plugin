@@ -8,9 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface IonSexpression extends PsiElement {
 
   @Nullable
-  IonAtoms getAtoms();
-
-  @Nullable
-  IonSexpressionOperator getSexpressionOperator();
+  IonSexpressionElements getSexpressionElements();
 
 }

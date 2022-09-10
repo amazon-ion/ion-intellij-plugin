@@ -29,14 +29,8 @@ public class IonSexpressionImpl extends ASTWrapperPsiElement implements IonSexpr
 
   @Override
   @Nullable
-  public IonAtoms getAtoms() {
-    return findChildByClass(IonAtoms.class);
-  }
-
-  @Override
-  @Nullable
-  public IonSexpressionOperator getSexpressionOperator() {
-    return findChildByClass(IonSexpressionOperator.class);
+  public IonSexpressionElements getSexpressionElements() {
+    return findChildByClass(IonSexpressionElements.class);
   }
 
 }
