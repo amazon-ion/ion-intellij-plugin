@@ -35,6 +35,7 @@ jobs:
     needs: gradleValidation
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         product: [ "IC-2020.2", "IC-2021.1", "IC-2022.1" ]
       max-parallel: 5
@@ -98,6 +99,7 @@ jobs:
 
       # Publish plugin to beta channel
       - name: Publish Beta Plugin
+        if: github.repository == 'amzn/ion-intellij-plugin'
         env:
           PUBLISH_TOKEN: ${{ secrets.JETBRAINS_TOKEN }}
           PUBLISH_CHANNEL: beta
@@ -105,6 +107,7 @@ jobs:
 
       # Upload plugin artifact to make it available in the next jobs
       - name: Upload artifact
+        if: github.repository == 'amzn/ion-intellij-plugin'
         uses: actions/upload-artifact@v1
         with:
           name: ${{ matrix.product }}-plugin-artifact
