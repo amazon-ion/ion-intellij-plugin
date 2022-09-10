@@ -36,6 +36,8 @@
         <!-- Executes annotators against the Ion file which creates more complex color highlighting -->
         <annotator language="Ion" implementationClass="com.amazon.ion.plugin.intellij.highlight.IonSyntaxAnnotatorExecutor"/>
 
+        <breadcrumbsInfoProvider implementation="com.amazon.ion.plugin.intellij.breadcrumb.IonBreadcrumbsInfoProvider" />
+
         <!-- Ion Operator Coding Insights - ROADMAP ITEM -->
         <!--<codeInsight.lineMarkerProvider language="Ion" implementationClass="com.amazon.ion.language.markers.JavaIonOperatorMarkerProvider"/>-->
 

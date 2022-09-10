@@ -5,6 +5,7 @@ import com.amazon.ion.plugin.intellij.psi.IonFile
 import com.amazon.ion.plugin.intellij.psi.IonList
 import com.amazon.ion.plugin.intellij.psi.IonPair
 import com.amazon.ion.plugin.intellij.psi.IonSexpression
+import com.amazon.ion.plugin.intellij.psi.IonSexpressionAtom
 import com.amazon.ion.plugin.intellij.psi.IonStruct
 import com.amazon.ion.plugin.intellij.psi.IonValue
 import com.amazon.ion.plugin.intellij.psi.impl.IonPsiUtil
@@ -21,11 +22,11 @@ class IonStructureViewElement(private val element: PsiElement) : StructureViewTr
         object : ItemPresentation {
             override fun getPresentableText(): String? =
                 when (element) {
-                    is IonPair -> element.key.keyName
+                    is IonPair -> element.key.text
                     is IonStruct -> "{...}"
                     is IonList -> "[...]"
                     is IonSexpression -> "(...)"
-                    is IonValue -> element.valueAsString
+                    is IonValue -> element.text
                     is IonFile -> element.virtualFile.presentableName
                     else -> element::class.java.simpleName
                 }
@@ -43,8 +44,8 @@ class IonStructureViewElement(private val element: PsiElement) : StructureViewTr
             is IonStruct -> element.members?.pairList?.map { IonStructureViewElement(it) }?.toTypedArray()
 
             is IonSexpression -> listOfNotNull(
-                listOfNotNull(element.sexpressionOperator?.let { IonStructureViewElement(it) }),
-                element.atoms?.valueList?.getViewElementChildren()
+                listOfNotNull(element.sexpressionElements?.sexpressionOperator?.let { IonStructureViewElement(it) }),
+                element.sexpressionElements?.sexpressionAtomList?.getViewElementChildren()
             ).flatten().toTypedArray()
 
             is IonPair -> arrayOf(element.value.container?.struct?.let { IonStructureViewElement(it) } ?: IonStructureViewElement(element.value))
@@ -76,11 +77,11 @@ class IonStructureViewElement(private val element: PsiElement) : StructureViewTr
 
     override fun getValue(): Any = element
 
-    override fun getAlphaSortKey(): String = (element as? IonPair)?.key?.keyName ?: element.text
+    override fun getAlphaSortKey(): String = (element as? IonPair)?.key?.text ?: element.text
 
-    private fun List<IonValue>.getViewElementChildren(): List<IonStructureViewElement> =
-        map { value ->
-            value.container?.let { IonStructureViewElement(IonPsiUtil.getPsiElement(it)!!) }
-                ?: IonStructureViewElement(value)
+    private fun List<IonSexpressionAtom>.getViewElementChildren(): List<IonStructureViewElement> =
+        map { atom ->
+            atom.value?.container?.let { IonStructureViewElement(IonPsiUtil.getPsiElement(it)!!) }
+                ?: IonStructureViewElement(atom)
         }
 }

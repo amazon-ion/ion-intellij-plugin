@@ -27,10 +27,4 @@ public class IonKeyImpl extends ASTWrapperPsiElement implements IonKey {
     else super.accept(visitor);
   }
 
-  @Override
-  @Nullable
-  public String getKeyName() {
-    return IonPsiUtil.getKeyName(this);
-  }
-
 }

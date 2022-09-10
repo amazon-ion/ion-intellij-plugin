@@ -5,10 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface IonKey extends PsiElement {
+public interface IonListElements extends PsiElement {
 
-  //WARNING: getKeyName(...) is skipped
-  //matching getKeyName(IonKey, ...)
-  //methods are not found in IonPsiUtil
+  @NotNull
+  List<IonValue> getValueList();
 
 }

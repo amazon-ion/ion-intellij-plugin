@@ -29,8 +29,8 @@ public class IonListImpl extends ASTWrapperPsiElement implements IonList {
 
   @Override
   @Nullable
-  public IonElements getElements() {
-    return findChildByClass(IonElements.class);
+  public IonListElements getListElements() {
+    return findChildByClass(IonListElements.class);
   }
 
 }

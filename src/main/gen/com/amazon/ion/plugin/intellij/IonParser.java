@@ -59,17 +59,17 @@ public class IonParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // sexpression_atom+
-  public static boolean atoms(PsiBuilder b, int l) {
+  static boolean atoms(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "atoms")) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, ATOMS, "<atoms>");
+    Marker m = enter_section_(b);
     r = sexpression_atom(b, l + 1);
     while (r) {
       int c = current_position_(b);
       if (!sexpression_atom(b, l + 1)) break;
       if (!empty_element_parsed_guard_(b, "atoms", c)) break;
     }
-    exit_section_(b, l, m, r, false, null);
+    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -131,20 +131,6 @@ public class IonParser implements PsiParser, LightPsiParser {
     if (!r) r = sexpression(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
-  }
-
-  /* ********************************************************** */
-  // list_element*
-  public static boolean elements(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "elements")) return false;
-    Marker m = enter_section_(b, l, _NONE_, ELEMENTS, "<elements>");
-    while (true) {
-      int c = current_position_(b);
-      if (!list_element(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "elements", c)) break;
-    }
-    exit_section_(b, l, m, true, false, null);
-    return true;
   }
 
   /* ********************************************************** */
@@ -210,7 +196,7 @@ public class IonParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // LBRACKET [elements] RBRACKET
+  // LBRACKET [list_elements] RBRACKET
   public static boolean list(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "list")) return false;
     if (!nextTokenIs(b, LBRACKET)) return false;
@@ -224,10 +210,10 @@ public class IonParser implements PsiParser, LightPsiParser {
     return r || p;
   }
 
-  // [elements]
+  // [list_elements]
   private static boolean list_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "list_1")) return false;
-    elements(b, l + 1);
+    list_elements(b, l + 1);
     return true;
   }
 
@@ -263,6 +249,20 @@ public class IonParser implements PsiParser, LightPsiParser {
     r = consumeToken(b, RBRACKET);
     exit_section_(b, l, m, r, false, null);
     return r;
+  }
+
+  /* ********************************************************** */
+  // list_element*
+  public static boolean list_elements(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "list_elements")) return false;
+    Marker m = enter_section_(b, l, _NONE_, LIST_ELEMENTS, "<list elements>");
+    while (true) {
+      int c = current_position_(b);
+      if (!list_element(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "list_elements", c)) break;
+    }
+    exit_section_(b, l, m, true, false, null);
+    return true;
   }
 
   /* ********************************************************** */
@@ -439,7 +439,7 @@ public class IonParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // LPAREN [sexpression_operator] [atoms] RPAREN
+  // LPAREN [sexpression_elements] RPAREN
   public static boolean sexpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "sexpression")) return false;
     if (!nextTokenIs(b, LPAREN)) return false;
@@ -447,36 +447,58 @@ public class IonParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b);
     r = consumeToken(b, LPAREN);
     r = r && sexpression_1(b, l + 1);
-    r = r && sexpression_2(b, l + 1);
     r = r && consumeToken(b, RPAREN);
     exit_section_(b, m, SEXPRESSION, r);
     return r;
   }
 
-  // [sexpression_operator]
+  // [sexpression_elements]
   private static boolean sexpression_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "sexpression_1")) return false;
-    sexpression_operator(b, l + 1);
-    return true;
-  }
-
-  // [atoms]
-  private static boolean sexpression_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "sexpression_2")) return false;
-    atoms(b, l + 1);
+    sexpression_elements(b, l + 1);
     return true;
   }
 
   /* ********************************************************** */
   // OPERATOR | value
-  static boolean sexpression_atom(PsiBuilder b, int l) {
+  public static boolean sexpression_atom(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "sexpression_atom")) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_);
+    Marker m = enter_section_(b, l, _NONE_, SEXPRESSION_ATOM, "<sexpression atom>");
     r = consumeToken(b, OPERATOR);
     if (!r) r = value(b, l + 1);
     exit_section_(b, l, m, r, false, IonParser::not_paren_or_next_member);
     return r;
+  }
+
+  /* ********************************************************** */
+  // [sexpression_operator] atoms*
+  public static boolean sexpression_elements(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "sexpression_elements")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, SEXPRESSION_ELEMENTS, "<sexpression elements>");
+    r = sexpression_elements_0(b, l + 1);
+    r = r && sexpression_elements_1(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // [sexpression_operator]
+  private static boolean sexpression_elements_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "sexpression_elements_0")) return false;
+    sexpression_operator(b, l + 1);
+    return true;
+  }
+
+  // atoms*
+  private static boolean sexpression_elements_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "sexpression_elements_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!atoms(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "sexpression_elements_1", c)) break;
+    }
+    return true;
   }
 
   /* ********************************************************** */

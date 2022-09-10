@@ -25,7 +25,8 @@ public interface IonValue extends PsiElement {
   @Nullable
   IonSymbol getSymbol();
 
-  @Nullable
-  String getValueAsString();
+  //WARNING: getValueAsString(...) is skipped
+  //matching getValueAsString(IonValue, ...)
+  //methods are not found in IonPsiUtil
 
 }
