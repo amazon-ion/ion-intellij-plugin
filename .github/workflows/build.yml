@@ -1,5 +1,4 @@
-
-# Github Action Workflow for building a new commit to the primary repo branch and publishing a new release to beta.
+# GitHub Action Workflow for building a new commit to the primary repo branch and publishing a new release to beta.
 #
 # Workflow is triggered on pushes into master.
 #
@@ -37,7 +36,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        product: [ "IC-2020.2", "IC-2021.1", "IC-2022.1" ]
+        product: [ "IC-2020.2", "IC-2021.1", "IC-2022.1", "IC-2022.2" ]
       max-parallel: 5
     env:
       PRODUCT_NAME: ${{ matrix.product }}

@@ -1,4 +1,4 @@
-# Github Action Workflow for building a pull request commit and validating that the commit builds for all
+# GitHub Action Workflow for building a pull request commit and validating that the commit builds for all
 # release versions of the plugin.
 #
 # Workflow is triggered on pull requests to the repo.
@@ -34,7 +34,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        product: [ "IC-2020.2", "IC-2021.1", "IC-2022.1" ]
+        product: [ "IC-2020.2", "IC-2021.1", "IC-2022.1", "IC-2022.2" ]
       max-parallel: 5
     env:
       PRODUCT_NAME: ${{ matrix.product }}
