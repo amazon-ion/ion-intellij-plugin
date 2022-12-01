@@ -1,4 +1,4 @@
-# Github Action Workflow for releasing a new stable version of the plugin.
+# GitHub Action Workflow for releasing a new stable version of the plugin.
 #
 # Workflow is triggered manually w/ proper access.
 #

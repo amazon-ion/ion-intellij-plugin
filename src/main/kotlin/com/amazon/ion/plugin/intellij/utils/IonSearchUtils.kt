@@ -33,7 +33,7 @@ object IonSearchUtils {
 
         return ionFiles.flatMap {
             val ionFile = psiManager.findFile(it) as? IonFile ?: return emptyList()
-            PsiTreeUtil.getChildrenOfType(ionFile, IonSexpressionOperator::class.java).toList()
+            PsiTreeUtil.getChildrenOfType(ionFile, IonSexpressionOperator::class.java)?.toList() ?: emptyList()
         }
     }
 

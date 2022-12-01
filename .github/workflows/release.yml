@@ -1,4 +1,4 @@
-# Github Action Workflow for releasing a new stable version of the plugin.
+# GitHub Action Workflow for releasing a new stable version of the plugin.
 #
 # Workflow is triggered manually w/ proper access.
 #
@@ -18,7 +18,7 @@ jobs:
   release:
     strategy:
       matrix:
-        product: [  "IC-2020.2", "IC-2021.1", "IC-2022.1" ]
+        product: [  "IC-2020.2", "IC-2021.1", "IC-2022.1", "IC-2022.2" ]
       max-parallel: 1
     env:
       PRODUCT_NAME: ${{ matrix.product }}
