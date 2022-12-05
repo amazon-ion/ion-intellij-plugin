@@ -168,12 +168,34 @@ tasks {
 fun readResource(name: String) = file("resources/$name").readText()
 
 /**
- * Function which creates a plugin version.
+ * Function which creates a plugin version in SemVer format
+ *
+ * Examples:
+ *
+ * GIVEN (GitHub workflow environment):
+ *  GITHUB_RUN_NUMBER: 30
+ *  major: 2
+ *  minor: 1
+ *  patch: 1
+ *  sdkVersion: IC-2022.2
+ *
+ * RETURNS:
+ *  2.1.1+30-IC-2022.2
+ *
+ *
+ * GIVEN (local dev environment):
+ *  GITHUB_RUN_NUMBER: null
+ *  major: 2
+ *  minor: 2
+ *  patch: 34
+ *  sdkVersion: IC-2022.3
+ *
+ * RETURNS:
+ *  2.2.34+0-IC-2022.3+alpha
  */
 fun pluginVersion(major: String, minor: String, patch: String) =
     listOf(
         major,
         minor,
-        patch,
-        maybeGithubRunNumber?.let { "$it-${descriptor.sdkVersion}" } ?: "0-${descriptor.sdkVersion}+alpha"
+        maybeGithubRunNumber?.let { "$patch+$it-${descriptor.sdkVersion}" } ?: "$patch+0-${descriptor.sdkVersion}+alpha"
     ).joinToString(".")
