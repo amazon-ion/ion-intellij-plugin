@@ -21,39 +21,6 @@ repositories {
 
 val plugins = listOf(
     PluginDescriptor(
-        since = "202",
-        until = "203.*",
-        sdkVersion = "IC-2020.2",
-        platformType = PlatformType.IdeaCommunity,
-        sourceFolder = "IC-202",
-        kotlin = KotlinOptions(
-            apiVersion = "1.3"
-        ),
-        dependencies = listOf("java", "Kotlin")
-    ),
-    PluginDescriptor(
-        since = "211",
-        until = "213.*",
-        sdkVersion = "IC-2021.1",
-        platformType = PlatformType.IdeaCommunity,
-        sourceFolder = "IC-211",
-        kotlin = KotlinOptions(
-            apiVersion = "1.4"
-        ),
-        dependencies = listOf("java", "Kotlin")
-    ),
-    PluginDescriptor(
-        since = "221",
-        until = "222.*",
-        sdkVersion = "IC-2022.1",
-        platformType = PlatformType.IdeaCommunity,
-        sourceFolder = "IC-221",
-        kotlin = KotlinOptions(
-            apiVersion = "1.5"
-        ),
-        dependencies = listOf("java", "Kotlin")
-    ),
-    PluginDescriptor(
         since = "222",
         until = "223.*",
         sdkVersion = "IC-2022.2",
