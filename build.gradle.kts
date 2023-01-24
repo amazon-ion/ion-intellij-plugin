@@ -30,10 +30,21 @@ val plugins = listOf(
             apiVersion = "1.6"
         ),
         dependencies = listOf("java", "Kotlin")
+    ),
+    PluginDescriptor(
+        since = "231",
+        until = "231.*",
+        sdkVersion = "231.4840-EAP-CANDIDATE-SNAPSHOT",
+        platformType = PlatformType.IdeaCommunity,
+        sourceFolder = "IC-231",
+        kotlin = KotlinOptions(
+            apiVersion = "1.6"
+        ),
+        dependencies = listOf("java", "Kotlin")
     )
 )
 
-val defaultProductName = "IC-2022.2"
+val defaultProductName = "231.4840-EAP-CANDIDATE-SNAPSHOT"
 val productName = System.getenv("PRODUCT_NAME") ?: defaultProductName
 val maybeGithubRunNumber = System.getenv("GITHUB_RUN_NUMBER")?.toInt()
 val descriptor = plugins.first { it.sdkVersion == productName }
