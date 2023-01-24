@@ -13,7 +13,7 @@ jobs:
   release:
     strategy:
       matrix:
-        product: [ ]
+        product: [ "231.4840-EAP-CANDIDATE-SNAPSHOT" ]
       max-parallel: 1
     env:
       PRODUCT_NAME: ${{ matrix.product }}
