@@ -23,16 +23,11 @@ jobs:
       - name: Fetch Sources
         uses: actions/checkout@v2
 
-      # Downloads JDK 11 AWS Corretto Build
-      - name: Download JDK
-        run: wget https://corretto.aws/downloads/latest/amazon-corretto-11-x64-linux-jdk.tar.gz --output-document jdk.tar.gz
-
-      # Setup JDK by using previously downloaded JDK.
       - name: Setup JDK
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v3
         with:
-          java-version: '11'
-          jdkFile: jdk.tar.gz
+          distribution: 'corretto'
+          java-version: '17'
 
       - name: Publish EAP Plugin
         env:

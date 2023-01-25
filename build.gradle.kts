@@ -106,6 +106,10 @@ tasks {
         }
     }
 
+    withType<JavaCompile> {
+        options.release.set(11)
+    }
+
     buildPlugin {
         archiveClassifier.set(descriptor.sdkVersion)
     }
