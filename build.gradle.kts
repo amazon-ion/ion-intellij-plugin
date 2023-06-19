@@ -34,7 +34,7 @@ val plugins = listOf(
     PluginDescriptor(
         since = "231",
         until = "231.*",
-        sdkVersion = "231.4840-EAP-CANDIDATE-SNAPSHOT",
+        sdkVersion = "IC-2023.1",
         platformType = PlatformType.IdeaCommunity,
         sourceFolder = "IC-231",
         kotlin = KotlinOptions(
@@ -44,7 +44,7 @@ val plugins = listOf(
     )
 )
 
-val defaultProductName = "231.4840-EAP-CANDIDATE-SNAPSHOT"
+val defaultProductName = "IC-2023.1"
 val productName = System.getenv("PRODUCT_NAME") ?: defaultProductName
 val maybeGithubRunNumber = System.getenv("GITHUB_RUN_NUMBER")?.toInt()
 val descriptor = plugins.first { it.sdkVersion == productName }

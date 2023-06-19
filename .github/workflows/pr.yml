@@ -34,7 +34,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        product: [ "IC-2022.2", "231.4840-EAP-CANDIDATE-SNAPSHOT" ]
+        product: [ "IC-2022.2", "IC-2023.1"]
       max-parallel: 5
     env:
       PRODUCT_NAME: ${{ matrix.product }}
