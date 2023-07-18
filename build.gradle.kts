@@ -12,7 +12,7 @@ buildscript {
 
 plugins {
     kotlin("jvm")
-    id("org.jetbrains.intellij") version "1.12.0"
+    id("org.jetbrains.intellij") version "1.13.2"
 }
 
 repositories {
@@ -38,7 +38,7 @@ val plugins = listOf(
         platformType = PlatformType.IdeaCommunity,
         sourceFolder = "IC-231",
         kotlin = KotlinOptions(
-            apiVersion = "1.6"
+            apiVersion = "1.7"
         ),
         dependencies = listOf("java", "Kotlin")
     )
@@ -107,18 +107,18 @@ tasks {
     compileKotlin {
         kotlinOptions {
             apiVersion = descriptor.kotlin.apiVersion
-            jvmTarget = "11"
+            jvmTarget = "17"
         }
     }
 
     withType<KotlinCompile> {
         kotlinOptions {
-            jvmTarget = "11"
+            jvmTarget = "17"
         }
     }
 
     withType<JavaCompile> {
-        options.release.set(11)
+        options.release.set(17)
     }
 
     buildPlugin {
