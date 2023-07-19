@@ -57,7 +57,7 @@ val pluginGroup: String by project
 // `pluginName_` variable ends with `_` because of the collision with Kotlin magic getter in the `intellij` closure.
 // Read more about the issue: https://github.com/JetBrains/intellij-platform-plugin-template/issues/29
 val pluginName_: String by project
-val pluginVersion: String = pluginVersion(major = "2", minor = "3", patch = "1")
+val pluginVersion: String = pluginVersion(major = "2", minor = "3", patch = "2")
 val pluginDescriptionFile: String by project
 val pluginChangeNotesFile: String by project
 
