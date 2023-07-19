@@ -12,6 +12,8 @@ buildscript {
 
 plugins {
     kotlin("jvm")
+    // TODO: The version need to be updated to the latest version 1.15.0.
+    // There will be configuration issues need to be solved after upgrading to the latest version 1.15.0.
     id("org.jetbrains.intellij") version "1.13.2"
 }
 
