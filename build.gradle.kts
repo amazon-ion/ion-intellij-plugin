@@ -12,9 +12,7 @@ buildscript {
 
 plugins {
     kotlin("jvm")
-    // TODO: The version need to be updated to the latest version 1.15.0.
-    // There will be configuration issues need to be solved after upgrading to the latest version 1.15.0.
-    id("org.jetbrains.intellij") version "1.13.2"
+    id("org.jetbrains.intellij") version "1.15.0"
 }
 
 repositories {
@@ -43,10 +41,21 @@ val plugins = listOf(
             apiVersion = "1.6"
         ),
         dependencies = listOf("java", "Kotlin")
+    ),
+    PluginDescriptor(
+            since = "232",
+            until = "232.*",
+            sdkVersion = "IC-2023.2",
+            platformType = PlatformType.IdeaCommunity,
+            sourceFolder = "IC-232",
+            kotlin = KotlinOptions(
+                    apiVersion = "1.6"
+            ),
+            dependencies = listOf("java", "Kotlin")
     )
 )
 
-val defaultProductName = "IC-2023.1"
+val defaultProductName = "IC-2023.2"
 val productName = System.getenv("PRODUCT_NAME") ?: defaultProductName
 val maybeGithubRunNumber = System.getenv("GITHUB_RUN_NUMBER")?.toInt()
 val descriptor = plugins.first { it.sdkVersion == productName }
