@@ -36,7 +36,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        product: [ "IC-2022.2", "IC-2023.1", "IC-2023.2"]
+        product: [ "IC-2022.2", "IC-2023.1", "IC-2023.2", "IC-2023.3"]
       max-parallel: 5
     env:
       PRODUCT_NAME: ${{ matrix.product }}
