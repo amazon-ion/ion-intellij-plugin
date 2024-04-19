@@ -63,10 +63,21 @@ val plugins = listOf(
                     apiVersion = "1.6"
             ),
             dependencies = listOf("java", "Kotlin")
+    ),
+    PluginDescriptor(
+            since = "241",
+            until = "241.*",
+            sdkVersion = "IC-2024.1",
+            platformType = PlatformType.IdeaCommunity,
+            sourceFolder = "IC-241",
+            kotlin = KotlinOptions(
+                    apiVersion = "1.6"
+            ),
+            dependencies = listOf("java", "Kotlin")
     )
 )
 
-val defaultProductName = "IC-2023.3"
+val defaultProductName = "IC-2024.1"
 val productName = System.getenv("PRODUCT_NAME") ?: defaultProductName
 val maybeGithubRunNumber = System.getenv("GITHUB_RUN_NUMBER")?.toInt()
 val descriptor = plugins.first { it.sdkVersion == productName }
@@ -77,7 +88,7 @@ val pluginGroup: String by project
 // `pluginName_` variable ends with `_` because of the collision with Kotlin magic getter in the `intellij` closure.
 // Read more about the issue: https://github.com/JetBrains/intellij-platform-plugin-template/issues/29
 val pluginName_: String by project
-val pluginVersion: String = pluginVersion(major = "2", minor = "5", patch = "0")
+val pluginVersion: String = pluginVersion(major = "2", minor = "6", patch = "0")
 val pluginDescriptionFile: String by project
 val pluginChangeNotesFile: String by project
 
