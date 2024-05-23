@@ -81,6 +81,10 @@ jobs:
           echo "::set-output name=name::$NAME"
           echo "::set-output name=artifact::$ARTIFACT"
 
+      # Build artifact using build Gradle task
+      - name: Build
+        run: ./gradlew build
+
       # Build artifact using buildPlugin Gradle task
       - name: Build Plugin
         run: ./gradlew buildPlugin
