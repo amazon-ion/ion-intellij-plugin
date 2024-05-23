@@ -69,8 +69,10 @@ class IonBasicFormattingTest : IonFormatterTestBase() {
               memberA: true,
               // Inner struct comment
               memberB: false,
-              transform: (join
-                (inner
+              transform: (
+                join
+                (
+                  inner
                   element
                 )
                 {
@@ -95,8 +97,10 @@ class IonBasicFormattingTest : IonFormatterTestBase() {
             )
         """,
         """
-        (expression // special case comment inline with expression does not move
-          (inner
+        (
+          expression // special case comment inline with expression does not move
+          (
+            inner
             expression
           )
           {

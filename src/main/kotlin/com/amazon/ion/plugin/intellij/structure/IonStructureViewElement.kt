@@ -44,7 +44,6 @@ class IonStructureViewElement(private val element: PsiElement) : StructureViewTr
             is IonStruct -> element.members?.pairList?.map { IonStructureViewElement(it) }?.toTypedArray()
 
             is IonSexpression -> listOfNotNull(
-                listOfNotNull(element.sexpressionElements?.sexpressionOperator?.let { IonStructureViewElement(it) }),
                 element.sexpressionElements?.sexpressionAtomList?.getViewElementChildren()
             ).flatten().toTypedArray()
 

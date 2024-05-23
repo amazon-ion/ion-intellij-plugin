@@ -63,4 +63,10 @@ public class IonValueImpl extends ASTWrapperPsiElement implements IonValue {
     return findChildByClass(IonSymbol.class);
   }
 
+  @Override
+  @Nullable
+  public String getValueAsString() {
+    return IonPsiUtil.getValueAsString(this);
+  }
+
 }

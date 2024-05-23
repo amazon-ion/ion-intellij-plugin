@@ -23,7 +23,6 @@ public interface IonTypes {
   IElementType SEXPRESSION = new IonElementType("SEXPRESSION");
   IElementType SEXPRESSION_ATOM = new IonElementType("SEXPRESSION_ATOM");
   IElementType SEXPRESSION_ELEMENTS = new IonElementType("SEXPRESSION_ELEMENTS");
-  IElementType SEXPRESSION_OPERATOR = new IonElementType("SEXPRESSION_OPERATOR");
   IElementType STRING = new IonElementType("STRING");
   IElementType STRUCT = new IonElementType("STRUCT");
   IElementType SYMBOL = new IonElementType("SYMBOL");
@@ -113,9 +112,6 @@ public interface IonTypes {
       }
       else if (type == SEXPRESSION_ELEMENTS) {
         return new IonSexpressionElementsImpl(node);
-      }
-      else if (type == SEXPRESSION_OPERATOR) {
-        return new IonSexpressionOperatorImpl(node);
       }
       else if (type == STRING) {
         return new IonStringImpl(node);

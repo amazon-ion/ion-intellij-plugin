@@ -95,7 +95,6 @@ private fun createSpaceBuilder(settings: CodeStyleSettings) =
          *  <lineBreak> )
          */
 
-        before(IonTypes.SEXPRESSION_OPERATOR).none()
         before(IonTypes.RPAREN).lineBreakInCode()
         beforeInside(IonTypes.SEXPRESSION_ATOM, IonTypes.SEXPRESSION).lineBreakInCode()
 

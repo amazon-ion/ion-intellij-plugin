@@ -10,7 +10,4 @@ public interface IonSexpressionElements extends PsiElement {
   @NotNull
   List<IonSexpressionAtom> getSexpressionAtomList();
 
-  @Nullable
-  IonSexpressionOperator getSexpressionOperator();
-
 }

@@ -67,10 +67,6 @@ public class IonVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitSexpressionOperator(@NotNull IonSexpressionOperator o) {
-    visitPsiElement(o);
-  }
-
   public void visitString(@NotNull IonString o) {
     visitPsiElement(o);
   }
