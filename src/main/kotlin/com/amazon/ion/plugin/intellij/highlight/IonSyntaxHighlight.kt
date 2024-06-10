@@ -31,6 +31,7 @@ import com.amazon.ion.plugin.intellij.psi.IonTypes.RBRACE
 import com.amazon.ion.plugin.intellij.psi.IonTypes.RBRACKET
 import com.amazon.ion.plugin.intellij.psi.IonTypes.RPAREN
 import com.amazon.ion.plugin.intellij.psi.IonTypes.SEPARATOR
+import com.amazon.ion.plugin.intellij.psi.IonTypes.SEXPRESSION_OPERATOR
 import com.amazon.ion.plugin.intellij.psi.IonTypes.TIMESTAMP
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors
 import com.intellij.openapi.editor.HighlighterColors
@@ -77,6 +78,7 @@ object IonSyntaxHighlight {
     val Tokens = mapOf(
         tokenSet(SEPARATOR) to arrayOf(Attributes.Separator),
         tokenSet(KEY_NAME) to arrayOf(Attributes.StructKey),
+        tokenSet(SEXPRESSION_OPERATOR) to arrayOf(Attributes.IonSExpressionOperator),
         tokenSet(INTEGER, DECIMAL, HEXINT, BININT) to arrayOf(Attributes.IonNumber),
         tokenSet(BOOLEAN, NULL) to arrayOf(Attributes.IonBool),
         tokenSet(ANNOTATION) to arrayOf(Attributes.Annotation),

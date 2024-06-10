@@ -24,7 +24,8 @@ key ::= (QUOTE KEY_NAME QUOTE) | (QQUOTE KEY_NAME QQUOTE) | (QQQUOTE KEY_NAME QQ
 list ::= LBRACKET [list_elements] RBRACKET {pin=1}
 list_elements ::= list_element*
 sexpression ::= (LPAREN [sexpression_elements] RPAREN)
-sexpression_elements ::= atoms*
+sexpression_elements ::= [sexpression_operator] atoms*
+sexpression_operator ::= (annotation)* (symbol)
 sexpression_atom ::= OPERATOR | value {pin(".*")=1 recoverWhile=not_paren_or_next_member}
 
 blob ::= LOB_START (BLOB_VALUE | BAD_CHARACTER) LOB_END

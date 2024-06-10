@@ -33,4 +33,10 @@ public class IonSexpressionElementsImpl extends ASTWrapperPsiElement implements 
     return PsiTreeUtil.getChildrenOfTypeAsList(this, IonSexpressionAtom.class);
   }
 
+  @Override
+  @Nullable
+  public IonSexpressionOperator getSexpressionOperator() {
+    return findChildByClass(IonSexpressionOperator.class);
+  }
+
 }

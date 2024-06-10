@@ -135,4 +135,27 @@ class IonBasicParsingTest : IonParserTestCaseBase(dataPath = "basic") {
                 PsiElement(RPAREN)(')')
         """
     )
+
+    fun `test sexp with SEXPRESSION operator`() = doTest(
+        """
+            (test element)
+        """,
+        """
+            Ion File
+              IonValueImpl(VALUE)
+                IonContainerImpl(CONTAINER)
+                  IonSexpressionImpl(SEXPRESSION)
+                    PsiElement(LPAREN)('(')
+                    IonSexpressionElementsImpl(SEXPRESSION_ELEMENTS)
+                      IonSexpressionOperatorImpl(SEXPRESSION_OPERATOR)
+                        IonSymbolImpl(SYMBOL)
+                          PsiElement(IDENTIFIER)('test')
+                      PsiWhiteSpace(' ')
+                      IonSexpressionAtomImpl(SEXPRESSION_ATOM)
+                        IonValueImpl(VALUE)
+                          IonSymbolImpl(SYMBOL)
+                            PsiElement(IDENTIFIER)('element')
+                    PsiElement(RPAREN)(')')
+        """
+    )
 }

@@ -33,8 +33,9 @@ class IonBreadcrumbsInfoProvider: BreadcrumbsProvider {
             is IonMembers -> (element as? IonPair)?.key?.text ?: ""
             is IonListElements -> p.valueList.indexOf(element).takeIf { it >= 0 }?.let { "[$it]" } ?: ""
             is IonSexpressionElements -> when (element) {
+                is IonSexpressionOperator -> "(0)"
                 is IonSexpressionAtom -> {
-                    val offset = 0
+                    val offset = if (p.sexpressionOperator != null) 1 else 0
                     p.sexpressionAtomList.indexOf(element)
                         .takeIf { it >= 0 }
                         ?.let { "(${it + offset})" }
