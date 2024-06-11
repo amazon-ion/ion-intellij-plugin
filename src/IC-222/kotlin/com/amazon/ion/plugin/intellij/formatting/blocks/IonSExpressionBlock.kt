@@ -20,7 +20,7 @@ class IonSExpressionBlock(
 ) : AbstractIonBlock(node, formatting = formatting, options = options) {
 
     override val childIndentedTypes: Set<IElementType> = setOf(
-        IonTypes.VALUE,
+        IonTypes.SEXPRESSION_ATOM,
         IonTypes.COMMENT
     )
 
