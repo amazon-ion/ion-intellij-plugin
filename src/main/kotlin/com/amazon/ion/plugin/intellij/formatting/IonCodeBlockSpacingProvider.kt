@@ -97,7 +97,7 @@ private fun createSpaceBuilder(settings: CodeStyleSettings) =
 
         before(IonTypes.SEXPRESSION_OPERATOR).none()
         before(IonTypes.RPAREN).lineBreakInCode()
-        beforeInside(IonTypes.VALUE, IonTypes.SEXPRESSION).lineBreakInCode()
+        beforeInside(IonTypes.SEXPRESSION_ATOM, IonTypes.SEXPRESSION).lineBreakInCode()
 
         /**
          * Separator spacing, by default no space before and one space after separator, like JSON.
