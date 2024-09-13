@@ -93,7 +93,7 @@ jobs:
 
       # Publish plugin to beta channel
       - name: Publish Beta Plugin
-        if: github.repository == 'amzn/ion-intellij-plugin'
+        if: github.repository == 'amazon-ion/ion-intellij-plugin'
         env:
           PUBLISH_TOKEN: ${{ secrets.JETBRAINS_TOKEN }}
           PUBLISH_CHANNEL: beta
@@ -101,8 +101,8 @@ jobs:
 
       # Upload plugin artifact to make it available in the next jobs
       - name: Upload artifact
-        if: github.repository == 'amzn/ion-intellij-plugin'
-        uses: actions/upload-artifact@v1
+        if: github.repository == 'amazon-ion/ion-intellij-plugin'
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.product }}-plugin-artifact
           path: ./build/distributions/${{ needs.build.outputs.artifact }}
