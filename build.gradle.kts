@@ -1,3 +1,5 @@
+import org.jetbrains.intellij.platform.gradle.IntelliJPlatformType
+import org.jetbrains.intellij.platform.gradle.models.ProductRelease
 import plugin.PluginDescriptor
 import plugin.PluginDescriptor.KotlinOptions
 import plugin.PlatformType
@@ -12,75 +14,90 @@ buildscript {
 
 plugins {
     kotlin("jvm")
-    id("org.jetbrains.intellij") version "1.15.0"
+    id("org.jetbrains.intellij.platform") version "2.0.1"
 }
 
 repositories {
     mavenCentral()
+
+    intellijPlatform {
+        defaultRepositories()
+  }
 }
 
 val plugins = listOf(
     PluginDescriptor(
         since = "222",
         until = "223.*",
-        sdkVersion = "IC-2022.2",
+        platformVersion = "2022.2",
         platformType = PlatformType.IdeaCommunity,
         sourceFolder = "IC-222",
         kotlin = KotlinOptions(
             apiVersion = "1.6"
         ),
-        dependencies = listOf("java", "Kotlin")
+        bundledDependencies = listOf("com.intellij.java", "org.jetbrains.kotlin")
     ),
     PluginDescriptor(
         since = "231",
         until = "231.*",
-        sdkVersion = "IC-2023.1",
+        platformVersion = "2023.1",
         platformType = PlatformType.IdeaCommunity,
         sourceFolder = "IC-231",
         kotlin = KotlinOptions(
             apiVersion = "1.6"
         ),
-        dependencies = listOf("java", "Kotlin")
+        bundledDependencies = listOf("com.intellij.java", "org.jetbrains.kotlin")
     ),
     PluginDescriptor(
             since = "232",
             until = "232.*",
-            sdkVersion = "IC-2023.2",
+            platformVersion = "2023.2",
             platformType = PlatformType.IdeaCommunity,
             sourceFolder = "IC-232",
             kotlin = KotlinOptions(
                     apiVersion = "1.6"
             ),
-            dependencies = listOf("java", "Kotlin")
+            bundledDependencies = listOf("com.intellij.java", "org.jetbrains.kotlin")
     ),
     PluginDescriptor(
             since = "233",
             until = "233.*",
-            sdkVersion = "IC-2023.3",
+            platformVersion = "2023.3",
             platformType = PlatformType.IdeaCommunity,
             sourceFolder = "IC-233",
             kotlin = KotlinOptions(
                     apiVersion = "1.6"
             ),
-            dependencies = listOf("java", "Kotlin")
+            bundledDependencies = listOf("com.intellij.java", "org.jetbrains.kotlin")
     ),
     PluginDescriptor(
-            since = "241",
-            until = "241.*",
-            sdkVersion = "IC-2024.1",
-            platformType = PlatformType.IdeaCommunity,
-            sourceFolder = "IC-241",
-            kotlin = KotlinOptions(
-                    apiVersion = "1.6"
-            ),
-            dependencies = listOf("java", "Kotlin")
+        since = "241",
+        until = "241.*",
+        platformVersion = "2024.1",
+        platformType = PlatformType.IdeaCommunity,
+        sourceFolder = "IC-241",
+        kotlin = KotlinOptions(
+            apiVersion = "1.6"
+        ),
+        bundledDependencies = listOf("com.intellij.java", "org.jetbrains.kotlin")
+    ),
+    PluginDescriptor(
+        since = "242",
+        until = "242.*",
+        platformVersion = "2024.2",
+        platformType = PlatformType.IdeaCommunity,
+        sourceFolder = "IC-242",
+        kotlin = KotlinOptions(
+            apiVersion = "1.6"
+        ),
+        bundledDependencies = listOf("com.intellij.java", "org.jetbrains.kotlin")
     )
 )
 
-val defaultProductName = "IC-2024.1"
+val defaultProductName = "2024.2"
 val productName = System.getenv("PRODUCT_NAME") ?: defaultProductName
 val maybeGithubRunNumber = System.getenv("GITHUB_RUN_NUMBER")?.toInt()
-val descriptor = plugins.first { it.sdkVersion == productName }
+val descriptor = plugins.first { it.platformVersion == productName }
 
 // Import variables from gradle.properties file
 val pluginGroup: String by project
@@ -88,7 +105,7 @@ val pluginGroup: String by project
 // `pluginName_` variable ends with `_` because of the collision with Kotlin magic getter in the `intellij` closure.
 // Read more about the issue: https://github.com/JetBrains/intellij-platform-plugin-template/issues/29
 val pluginName_: String by project
-val pluginVersion: String = pluginVersion(major = "2", minor = "6", patch = "1")
+val pluginVersion: String = pluginVersion(major = "2", minor = "7", patch = "1")
 val pluginDescriptionFile: String by project
 val pluginChangeNotesFile: String by project
 
@@ -98,22 +115,51 @@ val packageVersion: String by project
 group = pluginGroup
 version = packageVersion
 
-logger.lifecycle("Building Amazon Ion $pluginVersion for ${descriptor.platformType} ${descriptor.sdkVersion}")
+logger.lifecycle("Building Amazon Ion $pluginVersion for ${descriptor.platformType} ${descriptor.platformVersion}")
 
 dependencies {
-    // Kotlin runtime dependency is provided by the IntelliJ platform.
+    intellijPlatform {
+        create(descriptor.platformType.acronym, descriptor.platformVersion) // https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin.html#setting-up-intellij-platform
+        bundledPlugins(descriptor.bundledDependencies)
+        pluginVerifier()
+        instrumentationTools()
+    }
 }
 
-intellij {
-    pluginName.set(pluginName_)
-    version.set(descriptor.sdkVersion)
-    type.set(descriptor.platformType.acronym)
-    downloadSources.set(true)
-    updateSinceUntilBuild.set(false)
+intellijPlatform {
+    pluginConfiguration {
+        name.set(pluginName_)
+        version.set(descriptor.platformVersion)
+        description.set(readResource(pluginDescriptionFile))
+        changeNotes.set(readResource(pluginChangeNotesFile))
 
-    // Plugin Dependencies -> https://www.jetbrains.org/intellij/sdk/docs/basics/plugin_structure/plugin_dependencies.html
-    // Example: platformPlugins = com.intellij.java, com.jetbrains.php:203.4449.22
-    plugins.set(descriptor.dependencies)
+        ideaVersion {
+            sinceBuild.set(descriptor.since)
+            untilBuild.set(descriptor.until)
+        }
+    }
+
+    publishing {
+        token.set(System.getenv("PUBLISH_TOKEN"))
+
+        // Publish to beta unless release is specified.
+        if (System.getenv("PUBLISH_CHANNEL") != "release") {
+            channels.set(listOf("beta"))
+        }
+    }
+
+    pluginVerification {
+        ides {
+            ide(IntelliJPlatformType.IntellijIdeaCommunity, descriptor.platformVersion)
+            recommended()
+            select {
+                types.set(listOf(IntelliJPlatformType.IntellijIdeaCommunity))
+                channels.set(listOf(ProductRelease.Channel.BETA))
+                sinceBuild.set(descriptor.since)
+                untilBuild.set(descriptor.until)
+            }
+        }
+    }
 }
 
 sourceSets {
@@ -155,25 +201,7 @@ tasks {
     }
 
     buildPlugin {
-        archiveClassifier.set(descriptor.sdkVersion)
-    }
-
-    patchPluginXml {
-        version.set(pluginVersion)
-        sinceBuild.set(descriptor.since)
-        untilBuild.set(descriptor.until)
-
-        pluginDescription.set(readResource(pluginDescriptionFile))
-        changeNotes.set(readResource(pluginChangeNotesFile))
-    }
-
-    publishPlugin {
-        token.set(System.getenv("PUBLISH_TOKEN"))
-
-        // Publish to beta unless release is specified.
-        if (System.getenv("PUBLISH_CHANNEL") != "release") {
-            channels.set(listOf("beta"))
-        }
+        archiveClassifier.set(descriptor.getSDKVersion())
     }
 }
 
@@ -192,7 +220,7 @@ fun readResource(name: String) = file("resources/$name").readText()
  *  major: 2
  *  minor: 1
  *  patch: 1
- *  sdkVersion: IC-2022.2
+ *  sdkVersion: 2022.2
  *
  * RETURNS:
  *  2.1.1+30-IC-2022.2
@@ -203,7 +231,7 @@ fun readResource(name: String) = file("resources/$name").readText()
  *  major: 2
  *  minor: 2
  *  patch: 34
- *  sdkVersion: IC-2022.3
+ *  sdkVersion: 2022.3
  *
  * RETURNS:
  *  2.2.34+0-IC-2022.3+alpha
@@ -212,5 +240,6 @@ fun pluginVersion(major: String, minor: String, patch: String) =
     listOf(
         major,
         minor,
-        maybeGithubRunNumber?.let { "$patch+$it-${descriptor.sdkVersion}" } ?: "$patch+0-${descriptor.sdkVersion}+alpha"
+        maybeGithubRunNumber?.let { "$patch+$it-${descriptor.getSDKVersion()}" }
+            ?: "$patch+0-${descriptor.getSDKVersion()}+alpha"
     ).joinToString(".")

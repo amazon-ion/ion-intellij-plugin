@@ -23,9 +23,9 @@ data class PluginDescriptor(
     val platformType: PlatformType,
 
     /**
-     * The Platform SDK Version that this distribution will run on.
+     * The Platform Version that this distribution will run on.
      */
-    val sdkVersion: String,
+    val platformVersion: String,
 
     /**
      * Source folder which defines source code specific to this distribution.
@@ -40,7 +40,7 @@ data class PluginDescriptor(
     /**
      * Plugin dependencies. {@see https://plugins.jetbrains.com/docs/intellij/plugin-dependencies.html}
      */
-    val dependencies: List<String>
+    val bundledDependencies: List<String>
 ) {
     data class KotlinOptions(
         /**
@@ -49,6 +49,10 @@ data class PluginDescriptor(
          */
         val apiVersion: String
     )
+
+    fun getSDKVersion(): String {
+        return platformType.acronym + "-" + platformVersion
+    }
 }
 
 enum class PlatformType(val acronym: String) {
