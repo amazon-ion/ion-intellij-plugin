@@ -80,21 +80,10 @@ val plugins = listOf(
             apiVersion = "1.6"
         ),
         bundledDependencies = listOf("com.intellij.java", "org.jetbrains.kotlin")
-    ),
-    PluginDescriptor(
-        since = "242",
-        until = "242.*",
-        platformVersion = "2024.2",
-        platformType = PlatformType.IdeaCommunity,
-        sourceFolder = "IC-242",
-        kotlin = KotlinOptions(
-            apiVersion = "1.6"
-        ),
-        bundledDependencies = listOf("com.intellij.java", "org.jetbrains.kotlin")
     )
 )
 
-val defaultProductName = "2024.2"
+val defaultProductName = "2024.1"
 val productName = System.getenv("PRODUCT_NAME") ?: defaultProductName
 val maybeGithubRunNumber = System.getenv("GITHUB_RUN_NUMBER")?.toInt()
 val descriptor = plugins.first { it.platformVersion == productName }
