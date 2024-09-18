@@ -83,10 +83,10 @@ val plugins = listOf(
     )
 )
 
-val defaultProductName = "2024.1"
+val defaultProductName = "IC-2024.1"
 val productName = System.getenv("PRODUCT_NAME") ?: defaultProductName
 val maybeGithubRunNumber = System.getenv("GITHUB_RUN_NUMBER")?.toInt()
-val descriptor = plugins.first { it.platformVersion == productName }
+val descriptor = plugins.first { it.getSDKVersion() == productName }
 
 // Import variables from gradle.properties file
 val pluginGroup: String by project
@@ -209,7 +209,8 @@ fun readResource(name: String) = file("resources/$name").readText()
  *  major: 2
  *  minor: 1
  *  patch: 1
- *  sdkVersion: 2022.2
+ *  platformVersion: 2022.2
+ *  platformType: IC
  *
  * RETURNS:
  *  2.1.1+30-IC-2022.2
@@ -220,7 +221,8 @@ fun readResource(name: String) = file("resources/$name").readText()
  *  major: 2
  *  minor: 2
  *  patch: 34
- *  sdkVersion: 2022.3
+ *  platformVersion: 2022.3
+ *  platformType: IC
  *
  * RETURNS:
  *  2.2.34+0-IC-2022.3+alpha
