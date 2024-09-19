@@ -1,14 +1,20 @@
 import org.jetbrains.intellij.platform.gradle.IntelliJPlatformType
 import org.jetbrains.intellij.platform.gradle.models.ProductRelease
+import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 import plugin.PluginDescriptor
 import plugin.PluginDescriptor.KotlinOptions
 import plugin.PlatformType
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 
 buildscript {
     repositories {
         mavenCentral()
+    }
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
     }
 }
 
@@ -22,7 +28,7 @@ repositories {
 
     intellijPlatform {
         defaultRepositories()
-  }
+    }
 }
 
 val plugins = listOf(
@@ -101,7 +107,12 @@ dependencies {
         bundledPlugins(descriptor.bundledDependencies)
         pluginVerifier()
         instrumentationTools()
+
+        testFramework(TestFrameworkType.Platform)
     }
+
+    testImplementation("org.junit.jupiter:junit-jupiter:5.7.1")
+    testRuntimeOnly("org.junit.vintage:junit-vintage-engine")
 }
 
 intellijPlatform {
@@ -142,8 +153,8 @@ intellijPlatform {
 
 sourceSets {
     main {
-        withConvention(KotlinSourceSet::class) {
-            kotlin.srcDir("src/${descriptor.sourceFolder}/kotlin")
+        kotlin {
+            srcDir("src/${descriptor.sourceFolder}/kotlin")
         }
 
         resources {
