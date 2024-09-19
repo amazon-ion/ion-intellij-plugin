@@ -27,17 +27,6 @@ repositories {
 
 val plugins = listOf(
     PluginDescriptor(
-        since = "222",
-        until = "223.*",
-        platformVersion = "2022.2",
-        platformType = PlatformType.IdeaCommunity,
-        sourceFolder = "IC-222",
-        kotlin = KotlinOptions(
-            apiVersion = "1.6"
-        ),
-        bundledDependencies = listOf("com.intellij.java", "org.jetbrains.kotlin")
-    ),
-    PluginDescriptor(
         since = "231",
         until = "231.*",
         platformVersion = "2023.1",
@@ -83,7 +72,7 @@ val plugins = listOf(
     )
 )
 
-val defaultProductName = "IC-2024.1"
+val defaultProductName = "IC-2023.1"
 val productName = System.getenv("PRODUCT_NAME") ?: defaultProductName
 val maybeGithubRunNumber = System.getenv("GITHUB_RUN_NUMBER")?.toInt()
 val descriptor = plugins.first { it.getSDKVersion() == productName }
@@ -209,11 +198,11 @@ fun readResource(name: String) = file("resources/$name").readText()
  *  major: 2
  *  minor: 1
  *  patch: 1
- *  platformVersion: 2022.2
+ *  platformVersion: 2024.2
  *  platformType: IC
  *
  * RETURNS:
- *  2.1.1+30-IC-2022.2
+ *  2.1.1+30-IC-2024.2
  *
  *
  * GIVEN (local dev environment):
