@@ -16,12 +16,6 @@ env:
 
 jobs:
   release:
-    strategy:
-      matrix:
-        product: [ "IC-2023.1", "IC-2023.2", "IC-2023.3", "IC-2024.1", "IC-2024.2" ]
-      max-parallel: 1
-    env:
-      PRODUCT_NAME: ${{ matrix.product }}
     runs-on: ubuntu-latest
     steps:
       # Check out current repository
@@ -48,7 +42,6 @@ jobs:
 
       - name: Publish Stable Plugin
         env:
-          PRODUCT_NAME: ${{ matrix.product }}
           PUBLISH_TOKEN: ${{ secrets.JETBRAINS_TOKEN }}
           PUBLISH_CHANNEL: release
         run: ./gradlew --stacktrace publishPlugin

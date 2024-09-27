@@ -10,6 +10,7 @@ import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiElement
 import com.intellij.util.EmptyQuery
 import com.intellij.util.Query
+import org.jetbrains.annotations.ApiStatus
 
 /**
  * Searches for Ion Operators in Kotlin Code and links to them from Ion code.
@@ -29,11 +30,10 @@ class JavaIonOperatorMarkerProvider : RelatedItemLineMarkerProvider() {
         }
     }
 
-    private fun PsiElement.javaIonOperators(): Query<PsiClass> {
-        val ionOperatorExpression = this as? IonSexpressionOperator ?: return EmptyQuery()
-        val operatorName = ionOperatorExpression.text ?: return EmptyQuery()
+    private fun PsiElement.javaIonOperators(): List<PsiClass> {
+        val ionOperatorExpression = this as? IonSexpressionOperator ?: return emptyList()
+        val operatorName = ionOperatorExpression.text ?: return emptyList()
         return IonSearchUtils.queryJavaIonOperators(project)
-            .allowParallelProcessing()
-            .filtering { it.name?.startsWith(operatorName) != true }
+            .filter { it.name?.startsWith(operatorName) != true }
     }
 }
