@@ -9,12 +9,16 @@
 
     <id>software.amazon.ion.intellj</id>
     <name>Amazon Ion</name>
-    <vendor email="ion-team@amazon.com" url="https://github.com/amzn">Amazon</vendor>
+    <vendor email="ion-team@amazon.com" url="https://github.com/amazon-ion">Amazon</vendor>
 
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.lang</depends>
     <depends>com.intellij.modules.java</depends>
     <depends>org.jetbrains.kotlin</depends>
+
+    <extensions defaultExtensionNs="org.jetbrains.kotlin">
+        <supportsKotlinPluginMode supportsK2="true" />
+    </extensions>
 
     <extensions defaultExtensionNs="com.intellij">
 
