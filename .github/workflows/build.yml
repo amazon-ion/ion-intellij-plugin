@@ -12,9 +12,27 @@ on:
       - '*.md'
 jobs:
 
-  # Build and test plugin and provide artifact.
-  build:
+  # Forks won't have codebuild runners set up, so they can't run the verifyPlugin commands
+  # Rather than have no CI for forks, we'll run the basic 'build' command
+  build-fork:
+    name: Build (fork)
+    if: github.repository != 'amazon-ion/ion-intellij-plugin'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'corretto'
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+
+      # Build artifact using build Gradle task
+      - name: Build
+        run: ./gradlew build
+
+  build-source:
     name: Build
+    if: github.repository == 'amazon-ion/ion-intellij-plugin'
     runs-on: codebuild-ion-intellij-plugin-${{ github.run_id }}-${{ github.run_attempt }}-arm-3.0-large
     steps:
       - uses: actions/checkout@v4
@@ -37,7 +55,7 @@ jobs:
         run: ./gradlew verifyPlugin
 
   publish-beta:
-    needs: build
+    needs: build-source
     if: github.repository == 'amazon-ion/ion-intellij-plugin' && github.ref == 'refs/heads/master'
     runs-on: codebuild-ion-intellij-plugin-${{ github.run_id }}-${{ github.run_attempt }}-arm-3.0-large
     steps:
