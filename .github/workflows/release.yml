@@ -1,6 +1,6 @@
 # GitHub Action Workflow for releasing a new stable version of the plugin.
 #
-# Workflow is triggered manually w/ proper access.
+# Workflow is triggered when a new release is published.
 #
 # Additional Docs:
 # - GitHub Actions: https://help.github.com/en/actions
@@ -16,11 +16,10 @@ env:
 
 jobs:
   release:
-    runs-on: ubuntu-latest
+    runs-on: codebuild-ion-intellij-plugin-${{ github.run_id }}-${{ github.run_attempt }}-arm-3.0-large
     steps:
       # Check out current repository
-      - name: Fetch Sources
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       
       # Generate resources/plugin-changenotes.html
       - name: Generate Changenotes
@@ -34,8 +33,7 @@ jobs:
       - name: Log Changenotes Content
         run: cat resources/plugin-changenotes.html
 
-      - name: Setup JDK
-        uses: actions/setup-java@v3
+      - uses: actions/setup-java@v3
         with:
           distribution: 'corretto'
           java-version: '17'
