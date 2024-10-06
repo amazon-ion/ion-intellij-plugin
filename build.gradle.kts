@@ -36,17 +36,16 @@ val pluginGroup: String by project
 // `pluginName_` variable ends with `_` because of the collision with Kotlin magic getter in the `intellij` closure.
 // Read more about the issue: https://github.com/JetBrains/intellij-platform-plugin-template/issues/29
 val pluginName_: String by project
-val pluginVersion: String = pluginVersion(major = "2", minor = "8", patch = "1")
+val pluginVersion: String = pluginVersion(major = "2", minor = "7", patch = "0")
 val supportedSinceIdeVersion: String by project
 val supportedUntilIdeVersion: String by project
 val pluginDescriptionFile: String by project
 val pluginChangeNotesFile: String by project
 
 val platformVersion: String by project
-val packageVersion: String by project
 
 group = pluginGroup
-version = packageVersion
+version = pluginVersion
 
 logger.lifecycle("Building Amazon Ion $pluginVersion")
 
@@ -74,7 +73,7 @@ dependencies {
 intellijPlatform {
     pluginConfiguration {
         name.set(pluginName_)
-        version.set(packageVersion)
+        version.set(pluginVersion)
         description.set(readResource(pluginDescriptionFile))
         changeNotes.set(readResource(pluginChangeNotesFile))
 
