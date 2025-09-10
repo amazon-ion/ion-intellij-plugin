@@ -30,6 +30,33 @@ class IonBasicParsingTest : IonParserTestCaseBase(dataPath = "basic") {
         """
     )
 
+    fun `test struct with quoted field name having a space`() = doTest(
+        """
+            { 'abc def': value }
+        """,
+        """
+            Ion File
+              IonValueImpl(VALUE)
+                IonContainerImpl(CONTAINER)
+                  IonStructImpl(STRUCT)
+                    PsiElement(LBRACE)('{')
+                    PsiWhiteSpace(' ')
+                    IonMembersImpl(MEMBERS)
+                      IonPairImpl(PAIR)
+                        IonKeyImpl(KEY)
+                          PsiElement(QUOTE)(''')
+                          PsiElement(KEY_NAME)('abc def')
+                          PsiElement(QUOTE)(''')
+                        PsiElement(SEPARATOR)(':')
+                        PsiWhiteSpace(' ')
+                        IonValueImpl(VALUE)
+                          IonSymbolImpl(SYMBOL)
+                            PsiElement(IDENTIFIER)('value')
+                    PsiWhiteSpace(' ')
+                    PsiElement(RBRACE)('}')
+        """
+    )
+
     fun `test struct with trailing comma`() = doTest(
         """
             { key: value, }

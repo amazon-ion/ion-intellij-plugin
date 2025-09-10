@@ -34,7 +34,7 @@ DocumentationComment = "/**" {CommentContent} "*"+ "/"
 CommentContent       = ( [^*] | \*+ [^/*] )*
 
 /* Global */
-Identifier = ([A-Za-z_$]) ([0-9A-Za-z_$])*
+Identifier = ([A-Za-z_$])([0-9A-Za-z_$])*
 Comma = ","
 LBrace = "{"
 RBrace = "}"
@@ -44,7 +44,7 @@ LParen = "("
 RParen = ")"
 
 /* Key */
-KeyCharacter = [^:\ \n\r\t\f\\\'\"]
+KeyCharacter = [^:\n\r\t\f\\\'\"]
 
 /* Operators */
 DoublePlus = "++"
