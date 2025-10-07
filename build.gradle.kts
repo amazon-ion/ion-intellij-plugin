@@ -10,8 +10,10 @@ buildscript {
 }
 
 plugins {
-    kotlin("jvm") version "1.9.0"
-    id("org.jetbrains.intellij.platform") version "2.1.0"
+    // > "Using Kotlin 2.x is recommended for plugins targeting 2024.3 or later and required for 2025.1 or later."
+    // https://plugins.jetbrains.com/docs/intellij/using-kotlin.html#adding-kotlin-support
+    kotlin("jvm") version "2.2.20"
+    id("org.jetbrains.intellij.platform") version "2.9.0"
 }
 
 kotlin {
