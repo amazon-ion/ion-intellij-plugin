@@ -52,7 +52,7 @@ logger.lifecycle("Building Amazon Ion $pluginVersion")
 dependencies {
     intellijPlatform {
         // This should be equivalent to the lowest version that we build against.
-        intellijIdeaCommunity(supportedSinceIdeVersion.let(::branchToProductReleaseVersion))
+        intellijIdeaUltimate(supportedSinceIdeVersion.let(::branchToProductReleaseVersion))
 
         bundledPlugins(listOf(
             "com.intellij.java",
@@ -95,7 +95,7 @@ intellijPlatform {
     pluginVerification {
         ides {
             select {
-                types.set(listOf(IntelliJPlatformType.IntellijIdeaCommunity))
+                types.set(listOf(IntelliJPlatformType.IntellijIdeaUltimate))
                 channels.set(
                     listOf(
                         ProductRelease.Channel.RELEASE,
