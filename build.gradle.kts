@@ -96,6 +96,8 @@ intellijPlatform {
 
     pluginVerification {
         ides {
+            ide(IntelliJPlatformType.IntellijIdeaUltimate, "2025.2")
+            recommended()
             select {
                 types.set(listOf(IntelliJPlatformType.IntellijIdeaUltimate))
                 channels.set(
