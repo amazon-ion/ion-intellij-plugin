@@ -48,7 +48,7 @@ val supportedUntilIdeVersion: String by project
 val pluginDescriptionFile: String by project
 val pluginChangeNotesFile: String by project
 
-val platformVersion: String by project
+val isCI: Boolean = System.getenv("CI") == "true"
 
 group = pluginGroup
 version = pluginVersion
@@ -120,6 +120,13 @@ sourceSets {
             srcDirs("src/main/gen")
         }
     }
+}
+
+// We were seeing slow builds similar to https://github.com/gradle/gradle/issues/26006
+// Disabling incremental build snapshots dropped GHA :compileJava time from >5m to ~3m.
+// Caching in GHA might make all this better.
+tasks.withType<JavaCompile> {
+    if (isCI) options.setIncremental(false)
 }
 
 /**
