@@ -26,8 +26,15 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
 
       # Build artifact using build Gradle task
-      - name: Build
-        run: ./gradlew build
+      - name: Build And Profile
+        run: ./gradlew build --profile
+
+      # Upload the profile so we can reference it
+      - name: Upload Gradle Profile Reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: gradle-profile-reports
+          path: build/reports/profile/
 
       # Build artifact using buildPlugin Gradle task
       - name: Build Plugin
