@@ -10,8 +10,14 @@ buildscript {
 }
 
 plugins {
-    kotlin("jvm") version "1.9.0"
-    id("org.jetbrains.intellij.platform") version "2.1.0"
+    // > "Using Kotlin 2.x is recommended for plugins targeting 2024.3 or later and required for 2025.1 or later."
+    // https://plugins.jetbrains.com/docs/intellij/using-kotlin.html#adding-kotlin-support
+    kotlin("jvm") version "2.2.20"
+    // IDE selection for pluginVerification is broken in IntelliJ Platform Gradle Plugin 2.9.0
+    // select {} and recommended() don't work, only ide() seems to.
+    // See https://github.com/JetBrains/intellij-platform-gradle-plugin/issues/2025
+    // For now just stay on 2.8.0.
+    id("org.jetbrains.intellij.platform") version "2.8.0"
 }
 
 kotlin {
