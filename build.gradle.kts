@@ -65,7 +65,6 @@ dependencies {
             "org.jetbrains.kotlin",
         ))
         pluginVerifier()
-        instrumentationTools()
 
         testFramework(TestFrameworkType.Platform)
     }
