@@ -13,6 +13,8 @@ private const val CODE_STYLE_SETTINGS_DISPLAY_NAME = "Ion"
 class IonCodeStyleSettingsProvider : CodeStyleSettingsProvider() {
     override fun getConfigurableDisplayName(): String = CODE_STYLE_SETTINGS_DISPLAY_NAME
 
+    override fun getLanguage() = IonLanguage.INSTANCE
+
     override fun createConfigurable(settings: CodeStyleSettings, modelSettings: CodeStyleSettings): CodeStyleConfigurable =
         CodeStyleConfigurableConfiguration(settings, modelSettings)
 }
